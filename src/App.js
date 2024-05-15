@@ -12,7 +12,7 @@ function App(){
       <Routes>
           <Route index element={<Origem />} />
           <Route path="destino" element={<Destino />} />
-          <Route path="pacoteEnvio" element={<PacoteEnvio />} />
+          <Route path="pacote_envio" element={<PacoteEnvio />} />
           <Route path="valorfin" element={<ValorFinal />} />
           <Route path="fim" element={<Final />} />
           <Route path="*" element={<NoPage />} />

@@ -1,7 +1,9 @@
-import React from 'react';
+import LayoutOrDest from './LayoutOrDest';
 
 function Destino() {
-  return <h2>Tela 2</h2>;
-}
 
+  return (
+    LayoutOrDest('destino', '/pacote_envio')
+  );
+}
 export default Destino;
