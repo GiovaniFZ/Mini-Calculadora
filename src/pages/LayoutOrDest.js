@@ -1,9 +1,9 @@
 import * as React from 'react';
-import logo from '../assets/logo2.png';
 import { MenuItem, TextField, Button, InputLabel, FormControl } from '@mui/material';
 import Select from '@mui/material/Select';
-import './LayoutOrDest.css'
+import './Layout.css'
 import { useNavigate } from 'react-router-dom';
+import LayoutPad from './LayoutPad';
 
 function LayoutOrDest(role, path) {
 
@@ -14,29 +14,31 @@ function LayoutOrDest(role, path) {
   };
 
   // Configuração de navegação
-  let navigate = useNavigate(); 
-  function changeScreen(path){ 
+  let navigate = useNavigate();
+  function changeScreen(path) {
     navigate(path);
   }
+
+  // Configuração do Layout padrão 
+  const layout = LayoutPad();
   return (
     <div className='App'>
-    <img src={logo} className="App-logo" alt="logo_postaqui" />
-    <h1>Calculadora Postaqui</h1>
-    <form id="calcForm" className='dados'>
-    <h1>Dados de {role}</h1>
-    <TextField
+      {layout}
+      <form id="calcForm" className='dados'>
+        <h1>Dados de {role}</h1>
+        <TextField
           required
           id="name"
           label="Nome"
           placeholder="Ex: Mateus José"
         />
-      <TextField
+        <TextField
           required
           id="cpf"
           label="CPF"
           placeholder="Ex: 111.111.111-11"
         />
-      <TextField
+        <TextField
           required
           id="phone"
           label="Telefone"
@@ -56,18 +58,18 @@ function LayoutOrDest(role, path) {
           placeholder="Ex: 11111-000"
         />
         <FormControl>
-        <InputLabel id="state">Estado</InputLabel>
-        <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={state}
-        label="Estado"
-        onChange={handleChange}
-  >
-          <MenuItem value="sp">SP</MenuItem>
-          <MenuItem value="mg">MG</MenuItem>
-          <MenuItem value="rj">RJ</MenuItem>
-        </Select>
+          <InputLabel id="state">Estado</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={state}
+            label="Estado"
+            onChange={handleChange}
+          >
+            <MenuItem value="sp">SP</MenuItem>
+            <MenuItem value="mg">MG</MenuItem>
+            <MenuItem value="rj">RJ</MenuItem>
+          </Select>
         </FormControl>
         <TextField
           required
@@ -98,8 +100,9 @@ function LayoutOrDest(role, path) {
           label="Complemento"
           placeholder="Ex: Casa 20"
         />
-    </form>
-    <Button onClick={() => changeScreen(path)}>Avançar</Button>
+        <p></p>
+        <Button onClick={() => changeScreen(path)}>Avançar</Button>
+      </form>
     </div>
   );
 }

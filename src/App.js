@@ -14,7 +14,7 @@ function App(){
           <Route path="destino" element={<Destino />} />
           <Route path="pacote_envio" element={<PacoteEnvio />} />
           <Route path="valorfin" element={<ValorFinal />} />
-          <Route path="fim" element={<Final />} />
+          <Route path="final" element={<Final />} />
           <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
