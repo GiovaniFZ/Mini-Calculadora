@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { MenuItem, TextField, Button, InputLabel, FormControl } from '@mui/material';
+import { MenuItem, Button, InputLabel, FormControl } from '@mui/material';
 import Select from '@mui/material/Select';
 import './Layout.css'
 import { useNavigate } from 'react-router-dom';
 import LayoutPad from './LayoutPad';
+import CustomTextField from '../components/CustomTextField';
 
 function LayoutOrDest(role, path) {
 
@@ -26,32 +27,32 @@ function LayoutOrDest(role, path) {
       {layout}
       <form id="calcForm" className='dados'>
         <h1>Dados de {role}</h1>
-        <TextField
+        <CustomTextField
           required
           id="name"
           label="Nome"
           placeholder="Ex: Mateus José"
         />
-        <TextField
+        <CustomTextField
           required
           id="cpf"
           label="CPF"
           placeholder="Ex: 111.111.111-11"
         />
-        <TextField
+        <CustomTextField
           required
           id="phone"
           label="Telefone"
           placeholder="Ex: (11) 11111-1111"
         />
-        <TextField
+        <CustomTextField
           required
           id="outlined-required"
           label="Email"
           type="email"
           placeholder="Ex: jose@postaqui.com"
         />
-        <TextField
+        <CustomTextField
           required
           id="outlined-required"
           label="CEP"
@@ -60,8 +61,8 @@ function LayoutOrDest(role, path) {
         <FormControl>
           <InputLabel id="state">Estado</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            labelId="state"
+            id="state"
             value={state}
             label="Estado"
             onChange={handleChange}
@@ -71,31 +72,32 @@ function LayoutOrDest(role, path) {
             <MenuItem value="rj">RJ</MenuItem>
           </Select>
         </FormControl>
-        <TextField
+        <CustomTextField
           required
           id="outlined-required"
           label="Cidade"
           placeholder="Ex: São Paulo"
         />
-        <TextField
+        <CustomTextField
           required
           id="outlined-required"
           label="Bairro"
           placeholder="Ex: Centro"
+          InputProps={{ inputProps: { style: { background: '#fff' }}}}
         />
-        <TextField
+        <CustomTextField
           required
           id="outlined-required"
           label="Rua"
           placeholder="Ex: 15 de Novembro"
         />
-        <TextField
+        <CustomTextField
           required
           id="outlined-required"
           label="Numero"
           type='number'
         />
-        <TextField
+        <CustomTextField
           id="outlined-required"
           label="Complemento"
           placeholder="Ex: Casa 20"

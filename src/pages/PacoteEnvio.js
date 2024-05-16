@@ -23,28 +23,28 @@ function PacoteEnvio() {
                     id="peso"
                     label="Peso (g)"
                     type='number'
-                    placeholder="Ex: 500g"
+                    placeholder="Digite o peso do pacote em gramas"
                 />
                 <TextField
                     required
                     id="altura"
                     label="Altura (cm)"
                     type='number'
-                    placeholder="Ex: 50cm"
+                    placeholder="Digite a altura do pacote em cm"
                 />
                 <TextField
                     required
                     id="largura"
                     label="Largura (cm)"
                     type='number'
-                    placeholder="Ex: 40cm"
+                    placeholder="Digite a largura do pacote em cm"
                 />
                 <TextField
                     required
                     id="comp"
                     label="Comprimento (cm)"
                     type='number'
-                    placeholder="Ex: 50cm"
+                    placeholder="Digite o comprimento do pacote em cm"
                 />
                 </div>
                 <div className='packageField'>
@@ -60,7 +60,7 @@ function PacoteEnvio() {
                     id="comp"
                     label="Valor da mercadoria"
                     type='number'
-                    placeholder="Ex: R$5.00"
+                    placeholder="Digite o valor do pacote em R$"
                 />
                 <TextField
                     required
@@ -68,7 +68,8 @@ function PacoteEnvio() {
                     label="Quantidade de itens"
                     type='number'
                     color="primary"
-                    placeholder="Ex: 3"
+                    placeholder="Digite a quantidade de itens"
+                    InputProps={{ inputProps: { style: { color: '#fff' }}}}
                 />
                 <label for="itensDesc">Descrição dos itens</label>
                 <Textarea cols="100" rows="100" className='box' id="itensDesc" maxRows={1000}>
