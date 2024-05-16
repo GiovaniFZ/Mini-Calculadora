@@ -22,11 +22,14 @@ function LayoutOrDest(role, path) {
 
   // Configuração do Layout padrão 
   const layout = LayoutPad();
+
   return (
     <div className='App'>
+      <div className='background'>
       {layout}
       <form id="calcForm" className='dados'>
         <h1>Dados de {role}</h1>
+        <div className='inputs'>
         <CustomTextField
           required
           id="name"
@@ -45,6 +48,8 @@ function LayoutOrDest(role, path) {
           label="Telefone"
           placeholder="Ex: (11) 11111-1111"
         />
+        </div>
+        <div className='inputs'>
         <CustomTextField
           required
           id="outlined-required"
@@ -58,7 +63,7 @@ function LayoutOrDest(role, path) {
           label="CEP"
           placeholder="Ex: 11111-000"
         />
-        <FormControl>
+        <FormControl variant="filled" size="big">
           <InputLabel id="state">Estado</InputLabel>
           <Select
             labelId="state"
@@ -66,12 +71,16 @@ function LayoutOrDest(role, path) {
             value={state}
             label="Estado"
             onChange={handleChange}
+            sx={{ backgroundColor:'white' }}
+            style={{ width: 210 }}
           >
             <MenuItem value="sp">SP</MenuItem>
             <MenuItem value="mg">MG</MenuItem>
             <MenuItem value="rj">RJ</MenuItem>
           </Select>
         </FormControl>
+        </div>
+        <div className='inputs'>
         <CustomTextField
           required
           id="outlined-required"
@@ -91,6 +100,8 @@ function LayoutOrDest(role, path) {
           label="Rua"
           placeholder="Ex: 15 de Novembro"
         />
+        </div>
+        <div className='inputs'>
         <CustomTextField
           required
           id="outlined-required"
@@ -102,9 +113,10 @@ function LayoutOrDest(role, path) {
           label="Complemento"
           placeholder="Ex: Casa 20"
         />
-        <p></p>
-        <Button onClick={() => changeScreen(path)}>Avançar</Button>
+        </div>
+        <Button variant="contained" onClick={() => changeScreen(path)}>Avançar</Button>
       </form>
+      </div>
     </div>
   );
 }

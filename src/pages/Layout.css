@@ -1,18 +1,36 @@
 .App {
     text-align: center;
+    background:  linear-gradient(90deg, purple, orange);
   }
 
 .App-logo {
     height: 10vmin;
 }
+
+.background{
+  background:  linear-gradient(90deg, purple, orange);
+  height: 100vh;
+}
   
 .dados{
-    background-color: #f0e6f5;
-  }
+    background-color: #6a2592;
+    border-radius: 3%;
+    padding: 1%;
+    width: 55%;
+    align-items: center;
+    margin: 0 auto;
+}
 
 .box{
   width: 100%;
   height: 300px;
+}
+
+.inputs{
+  display: flex;
+  justify-content: center;
+  gap: 1%;
+  margin-bottom: 2%;
 }
 
 .packageField{
@@ -24,6 +42,6 @@
   gap: 20px;
 }
 
-TextField{
-  color: #FFFFFF
+h1{
+  color: white;
 }
