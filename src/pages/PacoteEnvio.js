@@ -17,6 +17,7 @@ function PacoteEnvio() {
             {layout}
             <form id="calcForm" className="dados">
                 <h1>Dados do pacote</h1>
+                <div className='packageField'>
                 <TextField
                     required
                     id="peso"
@@ -45,17 +46,21 @@ function PacoteEnvio() {
                     type='number'
                     placeholder="Ex: 50cm"
                 />
+                </div>
+                <div className='packageField'>
                 <FormGroup>
                     <FormControlLabel control={<Switch />} label="Logística reversa" />
                     <FormControlLabel control={<Switch defaultChecked />} label="Aviso de recebimento" />
                     <FormControlLabel control={<Switch />} label="Mãos próprias" />
                 </FormGroup>
+                </div>
+                <div className='packageField'>
                 <TextField
                     required
                     id="comp"
                     label="Valor da mercadoria"
                     type='number'
-                    placeholder="Ex: 50cm"
+                    placeholder="Ex: R$5.00"
                 />
                 <TextField
                     required
@@ -65,10 +70,10 @@ function PacoteEnvio() {
                     color="primary"
                     placeholder="Ex: 3"
                 />
-                <p></p>
                 <label for="itensDesc">Descrição dos itens</label>
                 <Textarea cols="100" rows="100" className='box' id="itensDesc" maxRows={1000}>
                 </Textarea>
+                </div>
                 <p></p>
                 <Button onClick={() => changeScreen('/valorfin')}>Avançar</Button>
             </form>
