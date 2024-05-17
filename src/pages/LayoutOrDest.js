@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { MenuItem, Button, InputLabel, FormControl, TextField } from '@mui/material';
 import Select from '@mui/material/Select';
 import './Layout.css'
@@ -7,15 +7,26 @@ import LayoutPad from './LayoutPad';
 
 function LayoutOrDest(role, path) {
 
-  // const para lidar com o evento do select
-  const [state, setState] = React.useState('');
-  const handleChange = (event) => {
-    setState(event.target.value);
-  };
+  // Variaveis para lidar com estados
+  const [name, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [cep, setCep] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [neigh, setNeigh] = useState('');
+  const [street, setStreet] = useState('');
+  const [num, setNum] = useState('');
+  const [comp, setComp] = useState('');
 
   // Configuração de navegação
   let navigate = useNavigate();
-  function changeScreen(path) {
+  function handleClick(path) {
+    const data = {
+      name, cpf, phone, email, cep, state, city, neigh, street, num, comp
+    }
+    console.log(data);
     navigate(path);
   }
 
@@ -25,96 +36,116 @@ function LayoutOrDest(role, path) {
   return (
     <div className='App'>
       <div className='background'>
-      {layout}
-      <form id="calcForm" className='dados'>
-        <h1>Dados de {role}</h1>
-        <div className='inputs'>
-        <TextField
-          required
-          id="name"
-          label="Nome"
-          placeholder="Ex: Mateus José"
-        />
-        <TextField
-          required
-          id="cpf"
-          label="CPF"
-          placeholder="Ex: 111.111.111-11"
-        />
-        <TextField
-          required
-          id="phone"
-          label="Telefone"
-          placeholder="Ex: (11) 11111-1111"
-        />
-        </div>
-        <div className='inputs'>
-        <TextField
-          required
-          id="outlined-required"
-          label="Email"
-          type="email"
-          placeholder="Ex: jose@postaqui.com"
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="CEP"
-          placeholder="Ex: 11111-000"
-        />
-        <FormControl variant="filled" size="big">
-          <InputLabel id="state">Estado</InputLabel>
-          <Select
-            labelId="state"
-            id="state"
-            value={state}
-            label="Estado"
-            onChange={handleChange}
-            sx={{ backgroundColor:'white' }}
-            style={{ width: 210 }}
-          >
-            <MenuItem value="sp">SP</MenuItem>
-            <MenuItem value="mg">MG</MenuItem>
-            <MenuItem value="rj">RJ</MenuItem>
-          </Select>
-        </FormControl>
-        </div>
-        <div className='inputs'>
-        <TextField
-          required
-          id="outlined-required"
-          label="Cidade"
-          placeholder="Ex: São Paulo"
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="Bairro"
-          placeholder="Ex: Centro"
-          InputProps={{ inputProps: { style: { background: '#fff' }}}}
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="Rua"
-          placeholder="Ex: 15 de Novembro"
-        />
-        </div>
-        <div className='inputs'>
-        <TextField
-          required
-          id="outlined-required"
-          label="Numero"
-          type='number'
-        />
-        <TextField
-          id="outlined-required"
-          label="Complemento"
-          placeholder="Ex: Casa 20"
-        />
-        </div>
-        <Button variant="contained" onClick={() => changeScreen(path)}>Avançar</Button>
-      </form>
+        {layout}
+        <form id="calcForm" className='dados'>
+          <h1>Dados de {role}</h1>
+          <div className='inputs'>
+            <TextField
+              required
+              id="name"
+              label="Nome"
+              placeholder="Ex: Mateus José"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <TextField
+              required
+              id="cpf"
+              label="CPF"
+              value={cpf}
+              placeholder="Ex: 111.111.111-11"
+              onChange={e => setCpf(e.target.value)}
+            />
+            <TextField
+              required
+              id="phone"
+              label="Telefone"
+              value={phone}
+              placeholder="Ex: (11) 11111-1111"
+              onChange={e => setPhone(e.target.value)}
+            />
+          </div>
+          <div className='inputs'>
+            <TextField
+              required
+              id="outlined-required"
+              label="Email"
+              type="email"
+              value={email}
+              placeholder="Ex: jose@postaqui.com"
+              onChange={e => setEmail(e.target.value)}
+            />
+            <TextField
+              required
+              id="outlined-required"
+              label="CEP"
+              value={cep}
+              placeholder="Ex: 11111-000"
+              onChange={e => setCep(e.target.value)}
+            />
+            <FormControl variant="filled" size="big">
+              <InputLabel id="state">Estado</InputLabel>
+              <Select
+                labelId="state"
+                id="state"
+                label="Estado"
+                value={state}
+                onChange={e => setState(e.target.value)}
+                sx={{ backgroundColor: 'white' }}
+                style={{ width: 210 }}
+              >
+                <MenuItem value="sp">SP</MenuItem>
+                <MenuItem value="mg">MG</MenuItem>
+                <MenuItem value="rj">RJ</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className='inputs'>
+            <TextField
+              required
+              id="city"
+              label="Cidade"
+              value={city}
+              placeholder="Ex: São Paulo"
+              onChange={e => setCity(e.target.value)}
+            />
+            <TextField
+              required
+              id="outlined-required"
+              label="Bairro"
+              value={neigh}
+              placeholder="Ex: Centro"
+              InputProps={{ inputProps: { style: { background: '#fff' } } }}
+              onChange={e => setNeigh(e.target.value)}
+            />
+            <TextField
+              required
+              id="outlined-required"
+              label="Rua"
+              value={street}
+              placeholder="Ex: 15 de Novembro"
+              onChange={e => setStreet(e.target.value)}
+            />
+          </div>
+          <div className='inputs'>
+            <TextField
+              required
+              id="num"
+              label="Numero"
+              type='number'
+              value={num}
+              onChange={e => setNum(e.target.value)}
+            />
+            <TextField
+              id="comp"
+              label="Complemento"
+              placeholder="Ex: Casa 20"
+              value={comp}
+              onChange={e => setComp(e.target.value)}
+            />
+          </div>
+          <Button variant="contained" onClick={() => handleClick(path)}>Avançar</Button>
+        </form>
       </div>
     </div>
   );

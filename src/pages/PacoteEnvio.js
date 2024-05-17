@@ -75,7 +75,7 @@ function PacoteEnvio() {
                     InputProps={{ inputProps: { style: { color: '#fff' }}}}
                 />
                 <label for="itensDesc" className='box_aux'>Descrição dos itens</label>
-                <Textarea className='box' cols="100" rows="100" id="itensDesc" maxRows={1000}>
+                <Textarea className='box' cols="100" rows="100" id="itensDesc" maxRows={1000} minRows={10}>
                 </Textarea>
                 </div>
                 <p></p>
