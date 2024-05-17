@@ -6,7 +6,7 @@ function LayoutPad() {
     return (
         <div className='App'>
             <img src={logo} className="App-logo" alt="logo_postaqui" />
-            <h1>Calculadora Postaqui</h1>
+            <h1 class="titulo">Calculadora Postaqui</h1>
         </div>
     );
 }

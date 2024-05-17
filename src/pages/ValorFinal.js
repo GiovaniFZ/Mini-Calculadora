@@ -14,14 +14,16 @@ function ValorFinal() {
     return (
         <div className="App">
             {layout}
+            <div className='background'>
             <form id="calcForm" className='dados'>
                 <h1>Valor final do frete</h1>
                 <p>Melhor frete para o seu destino:</p>
                 <p>Valor: </p>
                 <p>Prazo de entrega: Máximo de</p>
                 <h2>Economia: </h2>
-                <Button onClick={() => changeScreen('/final')} >Postar</Button>
+                <Button variant="contained" onClick={() => changeScreen('/final')} >Postar</Button>
             </form>
+            </div>
         </div>
     );
 }

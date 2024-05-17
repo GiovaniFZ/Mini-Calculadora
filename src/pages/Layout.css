@@ -13,17 +13,22 @@
 }
   
 .dados{
-    background-color: #6a2592;
+    background-color: #fff;
     border-radius: 3%;
     padding: 1%;
-    width: 55%;
+    width: 65%;
     align-items: center;
     margin: 0 auto;
+    justify-content: center;
 }
 
 .box{
-  width: 100%;
-  height: 300px;
+  width: 130%;
+  height: 200px;
+}
+
+.box_aux{
+  justify-content:  center;
 }
 
 .inputs{
@@ -36,12 +41,13 @@
 .packageField{
   display: inline-flex;
   flex-direction: column;
-  width: 20%;
+  width: 25%;
   justify-content: space-around;
+  align-items: center;
   padding: 20px;
   gap: 20px;
 }
 
-h1{
+.titulo{
   color: white;
 }

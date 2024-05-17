@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 function PacoteEnvio() {
     const layout = LayoutPad();
+    
     // Configuração de navegação
     const navigate = useNavigate();
     function changeScreen(path) {
@@ -16,6 +17,7 @@ function PacoteEnvio() {
     return (
         <div className='App'>
             {layout}
+            <div className='background'>
             <form id="calcForm" className="dados">
                 <h1>Dados do pacote</h1>
                 <div className='packageField'>
@@ -72,13 +74,14 @@ function PacoteEnvio() {
                     placeholder="Digite a quantidade de itens"
                     InputProps={{ inputProps: { style: { color: '#fff' }}}}
                 />
-                <label for="itensDesc">Descrição dos itens</label>
-                <Textarea cols="100" rows="100" className='box' id="itensDesc" maxRows={1000}>
+                <label for="itensDesc" className='box_aux'>Descrição dos itens</label>
+                <Textarea className='box' cols="100" rows="100" id="itensDesc" maxRows={1000}>
                 </Textarea>
                 </div>
                 <p></p>
-                <Button onClick={() => changeScreen('/valorfin')}>Avançar</Button>
+                <Button variant="contained" onClick={() => changeScreen('/valorfin')}>Avançar</Button>
             </form>
+            </div>
         </div>
     );
 }
