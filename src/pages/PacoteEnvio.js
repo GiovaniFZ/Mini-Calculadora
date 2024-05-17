@@ -15,9 +15,8 @@ function PacoteEnvio() {
     navigate(path);
 }
     // Configuração dos dados recebidos
-    const {dadosOrigem, dadosDestino} = useLocation().state;
-    console.log(dadosOrigem.name);
-    console.log(dadosDestino.name);
+    let arr = useLocation().state;
+    console.log(arr);
 
     return (
         <div className='App'>

@@ -15,18 +15,24 @@ function Origem() {
   const [cep, setCep] = useState('');
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
-  const [neigh, setNeigh] = useState('');
+  const [neighborhood, setNeigh] = useState('');
   const [street, setStreet] = useState('');
-  const [num, setNum] = useState('');
-  const [comp, setComp] = useState('');
+  const [number, setNum] = useState('');
+  const [complement, setComp] = useState('');
 
   // Configuração de navegação
   let navigate = useNavigate();
   function handleClick(path) {
-    const data = {
-      name, cpf, phone, email, cep, state, city, neigh, street, num, comp
+
+    // JSON para address
+    const address = {
+      cep, state, city, neighborhood, street, number, complement
     }
-    navigate(path, { state: data });
+    const sender = {
+      name, cpf, phone, email, address
+    }
+
+    navigate(path, { state: sender });
   }
 
   // Configuração do Layout padrão 
@@ -112,7 +118,7 @@ function Origem() {
               required
               id="outlined-required"
               label="Bairro"
-              value={neigh}
+              value={neighborhood}
               placeholder="Ex: Centro"
               InputProps={{ inputProps: { style: { background: '#fff' } } }}
               onChange={e => setNeigh(e.target.value)}
@@ -129,17 +135,17 @@ function Origem() {
           <div className='inputs'>
             <TextField
               required
-              id="num"
+              id="number"
               label="Numero"
               type='number'
-              value={num}
+              value={number}
               onChange={e => setNum(e.target.value)}
             />
             <TextField
-              id="comp"
+              id="complement"
               label="Complemento"
               placeholder="Ex: Casa 20"
-              value={comp}
+              value={complement}
               onChange={e => setComp(e.target.value)}
             />
           </div>

@@ -14,11 +14,11 @@ function Destino() {
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
   const [state, setState] = useState('');
-  const [city, setCity] = useState('');
-  const [neigh, setNeigh] = useState('');
+  const [uf, setUf] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
   const [street, setStreet] = useState('');
-  const [num, setNum] = useState('');
-  const [comp, setComp] = useState('');
+  const [number, setNum] = useState('');
+  const [complement, setComp] = useState('');
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
@@ -26,10 +26,21 @@ function Destino() {
   // Configuração de navegação
   let navigate = useNavigate();
   function handleClick(path) {
-    const data = {
-      name, cpf, phone, email, cep, state, city, neigh, street, num, comp
+    // Jsons
+    const address = {
+      cep, state, uf, neighborhood, street, number, complement
     }
-    navigate(path, {state: {dadosOrigem, data}});
+    const receiver = {
+       name, cpf, phone, email, address
+    }
+
+    // Combinando jsons
+    let combinedJsons = {
+      "sender": dadosOrigem,
+      "receiver": receiver
+    }
+
+    navigate(path, {state: {combinedJsons}});
   }
 
   // Configuração do Layout padrão 
@@ -105,20 +116,20 @@ function Destino() {
           <div className='inputs'>
             <TextField
               required
-              id="city"
+              id="uf"
               label="Cidade"
-              value={city}
+              value={uf}
               placeholder="Ex: São Paulo"
-              onChange={e => setCity(e.target.value)}
+              onChange={e => setUf(e.target.value)}
             />
             <TextField
               required
               id="outlined-required"
               label="Bairro"
-              value={neigh}
+              value={neighborhood}
               placeholder="Ex: Centro"
               InputProps={{ inputProps: { style: { background: '#fff' } } }}
-              onChange={e => setNeigh(e.target.value)}
+              onChange={e => setNeighborhood(e.target.value)}
             />
             <TextField
               required
@@ -132,17 +143,17 @@ function Destino() {
           <div className='inputs'>
             <TextField
               required
-              id="num"
+              id="number"
               label="Numero"
               type='number'
-              value={num}
+              value={number}
               onChange={e => setNum(e.target.value)}
             />
             <TextField
-              id="comp"
+              id="complement"
               label="Complemento"
               placeholder="Ex: Casa 20"
-              value={comp}
+              value={complement}
               onChange={e => setComp(e.target.value)}
             />
           </div>
