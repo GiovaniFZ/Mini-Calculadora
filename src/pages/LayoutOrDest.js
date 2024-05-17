@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MenuItem, Button, InputLabel, FormControl, TextField } from '@mui/material';
 import Select from '@mui/material/Select';
 import './Layout.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import LayoutPad from './LayoutPad';
 
 function LayoutOrDest(role, path) {
@@ -26,8 +26,7 @@ function LayoutOrDest(role, path) {
     const data = {
       name, cpf, phone, email, cep, state, city, neigh, street, num, comp
     }
-    console.log(data);
-    navigate(path);
+    navigate(path, {});
   }
 
   // Configuração do Layout padrão 

@@ -3,7 +3,7 @@ import LayoutPad from "./LayoutPad"
 import './Layout.css'
 import { TextField, Switch, FormGroup, FormControlLabel, Button } from "@mui/material";
 import Textarea from '@mui/joy/Textarea';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 function PacoteEnvio() {
@@ -14,6 +14,11 @@ function PacoteEnvio() {
     function changeScreen(path) {
     navigate(path);
 }
+    // Configuração dos dados recebidos
+    const {dadosOrigem, dadosDestino} = useLocation().state;
+    console.log(dadosOrigem.name);
+    console.log(dadosDestino.name);
+
     return (
         <div className='App'>
             {layout}
