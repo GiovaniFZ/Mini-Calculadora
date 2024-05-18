@@ -56,9 +56,7 @@ function PacoteEnvio() {
         }
         axios.post(url, jsonString, headers)
             .then(function (response) {
-                console.log(response.data.shipment)
                 melhor = returnBest(response.data.shipment);
-                console.log("melhor", melhor);
                 // Navigate
                 navigate(path, { state: melhor });
             })
@@ -187,6 +185,7 @@ function PacoteEnvio() {
                         >
                         </Textarea>
                     </div>
+                    <p></p>
                     <Button
                         variant="contained"
                         onClick={() => handleClick('/valorfin')}>Avançar
