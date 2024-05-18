@@ -16,17 +16,18 @@ function Destino() {
   const [cep, setCep] = useState('');
   let [state, setState] = useState('');
   let [city, setCity] = useState('');
-  let [neighborhood, setNeighborhood] = useState('');
+  let [neighborhood, setNeigh] = useState('');
   let [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   let [complement, setComp] = useState('');
+  const [touched, setTouched] = useState(false);
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
-  
+
   // State e uf são o mesmo
   const uf = state;
-  
+
   // Configuração de navegação
   let navigate = useNavigate();
   function handleClick(path) {
@@ -35,7 +36,7 @@ function Destino() {
       cep, state, uf, city, neighborhood, street, number, complement
     }
     const receiver = {
-       fullname, cpf, phone, email, address
+      fullname, cpf, phone, email, address
     }
 
     // Combinando jsons
@@ -44,22 +45,26 @@ function Destino() {
       "receiver": receiver
     }
 
-    navigate(path, {state: {...x}});
+    navigate(path, { state: { ...x } });
   }
 
-    // Configuração da API de cpf
-    function handleCepBlur() {
-      let url = 'https://viacep.com.br/ws/'+ cep + '/json'
-      axios.get(url)
-        .then(function (response) {
+  // Configuração da API de cpf
+  function handleCepBlur() {
+    let url = 'https://viacep.com.br/ws/' + cep + '/json'
+    axios.get(url)
+      .then(function (response) {
           // handle success
-          setCity(response.data.localidade)
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-      }
+          setCity(response.data.localidade);
+          setNeigh(response.data.bairro);
+          setStreet(response.data.logradouro);
+          setState(response.data.uf);
+          setComp(response.data.complemento);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+  }
 
   // Configuração do Layout padrão 
   const layout = LayoutPad();
@@ -77,7 +82,11 @@ function Destino() {
               label="Nome"
               placeholder="Ex: Mateus José"
               value={fullname}
+              error={touched && fullname === ''}
               onChange={e => setName(e.target.value)}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && fullname === '' ? 'Nome é obrigatório!' : ''}
             />
             <TextField
               required
@@ -86,6 +95,10 @@ function Destino() {
               value={cpf}
               placeholder="Ex: 111.111.111-11"
               onChange={e => setCpf(e.target.value)}
+              error={touched && cpf === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && cpf === '' ? 'CPF é obrigatório!' : ''}
             />
             <TextField
               required
@@ -94,6 +107,10 @@ function Destino() {
               value={phone}
               placeholder="Ex: (11) 11111-1111"
               onChange={e => setPhone(e.target.value)}
+              error={touched && phone === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && phone === '' ? 'Telefone é obrigatório!' : ''}
             />
           </div>
           <div className='inputs'>
@@ -105,6 +122,10 @@ function Destino() {
               value={email}
               placeholder="Ex: jose@postaqui.com"
               onChange={e => setEmail(e.target.value)}
+              error={touched && email === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && email === '' ? 'E-Mail é obrigatório!' : ''}
             />
             <TextField
               required
@@ -114,6 +135,9 @@ function Destino() {
               placeholder="Ex: 11111-000"
               onChange={e => setCep(e.target.value)}
               onBlur={handleCepBlur}
+              error={touched && cep === ''}
+              onFocus={() => setTouched(false)}
+              helperText={touched && cep === '' ? 'CEP é obrigatório!' : ''}
             />
             <FormControl variant="filled" size="big">
               <InputLabel id="state">Estado</InputLabel>
@@ -140,6 +164,10 @@ function Destino() {
               value={city}
               placeholder="Ex: São Paulo"
               onChange={e => setCity(e.target.value)}
+              error={touched && city === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && city === '' ? 'Cidade é obrigatória!' : ''}
             />
             <TextField
               required
@@ -148,7 +176,11 @@ function Destino() {
               value={neighborhood}
               placeholder="Ex: Centro"
               InputProps={{ inputProps: { style: { background: '#fff' } } }}
-              onChange={e => setNeighborhood(e.target.value)}
+              onChange={e => setNeigh(e.target.value)}
+              error={touched && neighborhood === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && city === '' ? 'Bairro é obrigatório!' : ''}
             />
             <TextField
               required
@@ -157,6 +189,10 @@ function Destino() {
               value={street}
               placeholder="Ex: 15 de Novembro"
               onChange={e => setStreet(e.target.value)}
+              error={touched && street === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && city === '' ? 'Rua é obrigatória!' : ''}
             />
           </div>
           <div className='inputs'>
@@ -167,6 +203,10 @@ function Destino() {
               type='number'
               value={number}
               onChange={e => setNum(e.target.value)}
+              error={touched && number === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && number === '' ? 'Número é obrigatório!' : ''}
             />
             <TextField
               id="complement"
@@ -176,7 +216,11 @@ function Destino() {
               onChange={e => setComp(e.target.value)}
             />
           </div>
-          <Button variant="contained" onClick={() => handleClick('/pacote_envio')}>Avançar</Button>
+          <Button
+            variant="contained"
+            disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
+            onClick={() => handleClick('/pacote_envio')}>Avançar
+          </Button>
         </form>
       </div>
     </div>

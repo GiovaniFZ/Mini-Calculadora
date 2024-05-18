@@ -20,6 +20,7 @@ function Origem() {
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
+  const [touched, setTouched] = useState(false);
 
   // Configuração de navegação
   let navigate = useNavigate();
@@ -38,9 +39,11 @@ function Origem() {
 
     navigate(path, { state: sender });
   }
+
   // Configuração da API de cpf
   function handleCepBlur() {
-    let url = 'https://viacep.com.br/ws/' + cep + '/json'
+    let url = 'https://viacep.com.br/ws/' + cep + '/json';
+    setTouched(true);
     axios.get(url)
       .then(function (response) {
         if (response.data.erro !== true) {
@@ -56,9 +59,8 @@ function Origem() {
         // handle error
         console.log(error);
       })
-  }
-
-
+    }
+  
   // Configuração do Layout padrão 
   const layout = LayoutPad();
 
@@ -75,7 +77,11 @@ function Origem() {
               label="Nome"
               placeholder="Ex: Mateus José"
               value={fullname}
+              error={touched && fullname === ''}
               onChange={e => setName(e.target.value)}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && fullname === ''? 'Nome é obrigatório!' : ''}
             />
             <TextField
               required
@@ -84,6 +90,10 @@ function Origem() {
               value={cpf}
               placeholder="Ex: 111.111.111-11"
               onChange={e => setCpf(e.target.value)}
+              error={touched && cpf === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && cpf === ''? 'CPF é obrigatório!' : ''}
             />
             <TextField
               required
@@ -92,6 +102,10 @@ function Origem() {
               value={phone}
               placeholder="Ex: (11) 11111-1111"
               onChange={e => setPhone(e.target.value)}
+              error={touched && phone === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && phone === ''? 'Telefone é obrigatório!' : ''}
             />
           </div>
           <div className='inputs'>
@@ -103,6 +117,10 @@ function Origem() {
               value={email}
               placeholder="Ex: jose@postaqui.com"
               onChange={e => setEmail(e.target.value)}
+              error={touched && email === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && email === ''? 'E-Mail é obrigatório!' : ''}
             />
             <TextField
               required
@@ -112,6 +130,9 @@ function Origem() {
               placeholder="Ex: 11111-000"
               onChange={e => setCep(e.target.value)}
               onBlur={handleCepBlur}
+              error={touched && cep === ''}
+              onFocus={() => setTouched(false)}
+              helperText={touched && cep === ''? 'CEP é obrigatório!' : ''}
             />
             <FormControl variant="filled" size="big">
               <InputLabel id="state">Estado</InputLabel>
@@ -138,6 +159,10 @@ function Origem() {
               value={city}
               placeholder="Ex: São Paulo"
               onChange={e => setCity(e.target.value)}
+              error={touched && city === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && city === ''? 'Cidade é obrigatória!' : ''}
             />
             <TextField
               required
@@ -147,6 +172,10 @@ function Origem() {
               placeholder="Ex: Centro"
               InputProps={{ inputProps: { style: { background: '#fff' } } }}
               onChange={e => setNeigh(e.target.value)}
+              error={touched && neighborhood === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && city === ''? 'Bairro é obrigatório!' : ''}
             />
             <TextField
               required
@@ -155,6 +184,10 @@ function Origem() {
               value={street}
               placeholder="Ex: 15 de Novembro"
               onChange={e => setStreet(e.target.value)}
+              error={touched && street === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && city === ''? 'Rua é obrigatória!' : ''}
             />
           </div>
           <div className='inputs'>
@@ -165,6 +198,10 @@ function Origem() {
               type='number'
               value={number}
               onChange={e => setNum(e.target.value)}
+              error={touched && number === ''}
+              onBlur={() => setTouched(true)}
+              onFocus={() => setTouched(false)}
+              helperText={touched && number === ''? 'Número é obrigatório!' : ''}
             />
             <TextField
               id="complement"
@@ -174,7 +211,11 @@ function Origem() {
               onChange={e => setComp(e.target.value)}
             />
           </div>
-          <Button variant="contained" onClick={() => handleClick('/destino')}>Avançar</Button>
+          <Button 
+          variant="contained" 
+          disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
+          onClick={() => handleClick('/destino')}>Avançar
+          </Button>
         </form>
       </div>
     </div>
