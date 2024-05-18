@@ -8,13 +8,13 @@ import LayoutPad from './LayoutPad';
 function Destino() {
 
   // Variaveis para lidar com estados
-  const [name, setName] = useState('');
+  const [fullname, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
   const [state, setState] = useState('');
-  const [uf, setUf] = useState('');
+  const [city, setCity] = useState('');
   const [neighborhood, setNeighborhood] = useState('');
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
@@ -22,25 +22,28 @@ function Destino() {
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
-
+  
+  // State e uf são o mesmo
+  const uf = state;
+  
   // Configuração de navegação
   let navigate = useNavigate();
   function handleClick(path) {
     // Jsons
     const address = {
-      cep, state, uf, neighborhood, street, number, complement
+      cep, state, uf, city, neighborhood, street, number, complement
     }
     const receiver = {
-       name, cpf, phone, email, address
+       fullname, cpf, phone, email, address
     }
 
     // Combinando jsons
-    let combinedJsons = {
+    const x = {
       "sender": dadosOrigem,
       "receiver": receiver
     }
 
-    navigate(path, {state: {combinedJsons}});
+    navigate(path, {state: {...x}});
   }
 
   // Configuração do Layout padrão 
@@ -58,7 +61,7 @@ function Destino() {
               id="name"
               label="Nome"
               placeholder="Ex: Mateus José"
-              value={name}
+              value={fullname}
               onChange={e => setName(e.target.value)}
             />
             <TextField
@@ -116,11 +119,11 @@ function Destino() {
           <div className='inputs'>
             <TextField
               required
-              id="uf"
+              id="city"
               label="Cidade"
-              value={uf}
+              value={city}
               placeholder="Ex: São Paulo"
-              onChange={e => setUf(e.target.value)}
+              onChange={e => setCity(e.target.value)}
             />
             <TextField
               required

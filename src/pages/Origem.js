@@ -8,14 +8,14 @@ import LayoutPad from './LayoutPad';
 function Origem() {
 
   // Variaveis para lidar com estados
-  const [name, setName] = useState('');
+  const [fullname, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
   const [state, setState] = useState('');
-  const [city, setCity] = useState('');
   const [neighborhood, setNeigh] = useState('');
+  const [city, setCity] = useState('');
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
@@ -24,12 +24,15 @@ function Origem() {
   let navigate = useNavigate();
   function handleClick(path) {
 
+    // State e uf são o mesmo
+    const uf = state;
+
     // JSON para address
     const address = {
-      cep, state, city, neighborhood, street, number, complement
+      cep, state, uf, city, neighborhood, street, number, complement
     }
     const sender = {
-      name, cpf, phone, email, address
+      fullname, cpf, phone, email, address
     }
 
     navigate(path, { state: sender });
@@ -50,7 +53,7 @@ function Origem() {
               id="name"
               label="Nome"
               placeholder="Ex: Mateus José"
-              value={name}
+              value={fullname}
               onChange={e => setName(e.target.value)}
             />
             <TextField

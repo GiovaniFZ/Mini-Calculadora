@@ -4,6 +4,7 @@ import './Layout.css'
 import { TextField, Switch, FormGroup, FormControlLabel, Button } from "@mui/material";
 import Textarea from '@mui/joy/Textarea';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from "axios";
 
 
 function PacoteEnvio() {
@@ -28,22 +29,53 @@ function PacoteEnvio() {
     const navigate = useNavigate();
     function handleClick(path) {
         // Jsons
-        const information={
+        const information = {
             amount, quantity, description
         }
 
-        const pack= {
-            weight, height, width,length, reverse, ar, own_hands, information
+        const pack = {
+            weight, height, width, length, reverse, ar, own_hands, information
         }
 
-        let combinedJsons = {
-            data,
-            "information": information,
+        let x = {
+            ...data, // inclui diretamente os dados de data
             "package": pack
         }
-        console.log(combinedJsons)
-        navigate(path);
+
+        // Requisição para API
+        let jsonString = JSON.stringify(x);
+        axiosPost(jsonString, path);
     }
+
+    // Configuração de post usando Axios
+    function axiosPost(jsonString, path) {
+        let melhor;
+        const url = 'https://f29faec4-6487-4b60-882f-383b4054cc32.mock.pstmn.io/shipping_calculate'
+        const headers = {
+            'Content-Type': 'application/json'
+        }
+        axios.post(url, jsonString, headers)
+            .then(function (response) {
+                console.log(response.data.shipment)
+                melhor = returnBest(response.data.shipment);
+                console.log("melhor", melhor);
+                // Navigate
+                navigate(path, { state: melhor });
+            })
+            .catch(function (error) { // Tratamento do erro
+                console.log(error);
+            });
+    }
+
+    // Função para retornar o menor frete, valor e dias de entrega
+    function returnBest(arr){
+        let menor_frete = arr.reduce((minObj, currentObj) => {
+            return currentObj.price < minObj.price ? currentObj : minObj;
+          }, arr[0]);
+
+          return menor_frete;
+    }
+
     return (
         <div className='App'>
             {layout}
@@ -94,30 +126,30 @@ function PacoteEnvio() {
                                 control={
                                     <Switch
                                         checked={reverse}
-                                        onChange={e => setReverse(e.target.checked)} 
-                                        />
-                                }
-                                label="Logística reversa" 
-                                />
-                            <FormControlLabel
-                                control={
-                                    <Switch 
-                                    defaultChecked 
-                                    checked={ar}
-                                    onChange={e => setAr(e.target.checked)
-                                        } 
+                                        onChange={e => setReverse(e.target.checked)}
                                     />
                                 }
-                                label="Aviso de recebimento" 
-                                />
-                            <FormControlLabel 
-                            control={
-                            <Switch 
-                            checked={own_hands} 
-                            onChange={e => setOwnHands(e.target.checked)}
+                                label="Logística reversa"
                             />
-                            } 
-                            label="Mãos próprias" 
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        defaultChecked
+                                        checked={ar}
+                                        onChange={e => setAr(e.target.checked)
+                                        }
+                                    />
+                                }
+                                label="Aviso de recebimento"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={own_hands}
+                                        onChange={e => setOwnHands(e.target.checked)}
+                                    />
+                                }
+                                label="Mãos próprias"
                             />
                         </FormGroup>
                     </div>
@@ -155,9 +187,9 @@ function PacoteEnvio() {
                         >
                         </Textarea>
                     </div>
-                    <Button 
-                    variant="contained" 
-                    onClick={() => handleClick('/valorfin')}>Avançar
+                    <Button
+                        variant="contained"
+                        onClick={() => handleClick('/valorfin')}>Avançar
                     </Button>
                 </form>
             </div>
