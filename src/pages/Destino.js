@@ -4,6 +4,7 @@ import Select from '@mui/material/Select';
 import './Layout.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutPad from './LayoutPad';
+import axios from 'axios';
 
 function Destino() {
 
@@ -13,12 +14,12 @@ function Destino() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [street, setStreet] = useState('');
+  let [state, setState] = useState('');
+  let [city, setCity] = useState('');
+  let [neighborhood, setNeighborhood] = useState('');
+  let [street, setStreet] = useState('');
   const [number, setNum] = useState('');
-  const [complement, setComp] = useState('');
+  let [complement, setComp] = useState('');
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
@@ -45,6 +46,20 @@ function Destino() {
 
     navigate(path, {state: {...x}});
   }
+
+    // Configuração da API de cpf
+    function handleCepBlur() {
+      let url = 'https://viacep.com.br/ws/'+ cep + '/json'
+      axios.get(url)
+        .then(function (response) {
+          // handle success
+          setCity(response.data.localidade)
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+      }
 
   // Configuração do Layout padrão 
   const layout = LayoutPad();
@@ -98,6 +113,7 @@ function Destino() {
               value={cep}
               placeholder="Ex: 11111-000"
               onChange={e => setCep(e.target.value)}
+              onBlur={handleCepBlur}
             />
             <FormControl variant="filled" size="big">
               <InputLabel id="state">Estado</InputLabel>
@@ -110,9 +126,9 @@ function Destino() {
                 sx={{ backgroundColor: 'white' }}
                 style={{ width: 210 }}
               >
-                <MenuItem value="sp">SP</MenuItem>
-                <MenuItem value="mg">MG</MenuItem>
-                <MenuItem value="rj">RJ</MenuItem>
+                <MenuItem value="SP">SP</MenuItem>
+                <MenuItem value="MG">MG</MenuItem>
+                <MenuItem value="RJ">RJ</MenuItem>
               </Select>
             </FormControl>
           </div>

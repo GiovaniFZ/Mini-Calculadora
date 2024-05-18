@@ -4,6 +4,7 @@ import Select from '@mui/material/Select';
 import './Layout.css'
 import { useNavigate } from 'react-router-dom';
 import LayoutPad from './LayoutPad';
+import axios from 'axios';
 
 function Origem() {
 
@@ -37,6 +38,26 @@ function Origem() {
 
     navigate(path, { state: sender });
   }
+  // Configuração da API de cpf
+  function handleCepBlur() {
+    let url = 'https://viacep.com.br/ws/' + cep + '/json'
+    axios.get(url)
+      .then(function (response) {
+        if (response.data.erro !== true) {
+          // handle success
+          setCity(response.data.localidade);
+          setNeigh(response.data.bairro);
+          setStreet(response.data.logradouro);
+          setState(response.data.uf);
+          setComp(response.data.complemento);
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+  }
+
 
   // Configuração do Layout padrão 
   const layout = LayoutPad();
@@ -90,6 +111,7 @@ function Origem() {
               value={cep}
               placeholder="Ex: 11111-000"
               onChange={e => setCep(e.target.value)}
+              onBlur={handleCepBlur}
             />
             <FormControl variant="filled" size="big">
               <InputLabel id="state">Estado</InputLabel>
@@ -102,9 +124,9 @@ function Origem() {
                 sx={{ backgroundColor: 'white' }}
                 style={{ width: 210 }}
               >
-                <MenuItem value="sp">SP</MenuItem>
-                <MenuItem value="mg">MG</MenuItem>
-                <MenuItem value="rj">RJ</MenuItem>
+                <MenuItem value="SP">SP</MenuItem>
+                <MenuItem value="MG">MG</MenuItem>
+                <MenuItem value="RJ">RJ</MenuItem>
               </Select>
             </FormControl>
           </div>
