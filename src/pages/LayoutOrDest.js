@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MenuItem, Button, InputLabel, FormControl, TextField } from '@mui/material';
+import { MenuItem, Button, InputLabel, FormControl, TextField, FormHelperText } from '@mui/material';
 import Select from '@mui/material/Select';
 import './Layout.css';
 import LayoutPad from './LayoutPad';
@@ -25,6 +25,7 @@ function LayoutOrDest(path, role, handleClick) {
   const [cepCheck, setCepCheck] = useState(false);
   const [cpfCheck, setCpfCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
+  const [stateCheck, setStateCheck] = useState('');
 
   // Configuração da API de cep
   function handleCepBlur() {
@@ -54,23 +55,32 @@ function LayoutOrDest(path, role, handleClick) {
     }
   }
 
-  function verifyCpf(){
+  function verifyCpf() {
     const regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
     setTouched(true);
-    if(regex.test(cpf)){
+    if (regex.test(cpf)) {
       setCpfCheck(false);
-    }else{
+    } else {
       setCpfCheck(true);
     }
   }
 
-  function verifyPhone(){
+  function verifyPhone() {
     const regex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
     setTouched(true);
-    if(regex.test(phone)){
+    if (regex.test(phone)) {
       setPhoneCheck(false);
-    }else{
+    } else {
       setPhoneCheck(true);
+    }
+  }
+
+  function verifyState() {
+    if (state === '') {
+      setTouched(true);
+      setStateCheck('Estado é obrigatório!');
+    }else{
+      setStateCheck('');
     }
   }
 
@@ -104,14 +114,14 @@ function LayoutOrDest(path, role, handleClick) {
               onFocus={() => setTouched(false)}
               maskChar="_"
             >
-            {() => (
-            <TextField
-              required
-              id="cpf"
-              label="CPF"
-              error={touched && cpfCheck}
-              helperText={touched && cpfCheck ? 'Insira um CPF válido!' : ''}
-            />)}
+              {() => (
+                <TextField
+                  required
+                  id="cpf"
+                  label="CPF"
+                  error={touched && cpfCheck}
+                  helperText={touched && cpfCheck ? 'Insira um CPF válido!' : ''}
+                />)}
             </InputMask>
             <InputMask
               mask="(99) 99999-9999"
@@ -121,16 +131,16 @@ function LayoutOrDest(path, role, handleClick) {
               onFocus={() => setTouched(false)}
               maskChar=" "
             >
-            {() => (
-            <TextField
-              required
-              id="phone"
-              label="Telefone"
-              value={phone}
-              error={touched && phoneCheck}
-              helperText={touched && phoneCheck? 'Insira um telefone válido!' : ''}
-            />
-            )}
+              {() => (
+                <TextField
+                  required
+                  id="phone"
+                  label="Telefone"
+                  value={phone}
+                  error={touched && phoneCheck}
+                  helperText={touched && phoneCheck ? 'Insira um telefone válido!' : ''}
+                />
+              )}
             </InputMask>
           </div>
           <div className='inputs'>
@@ -156,13 +166,13 @@ function LayoutOrDest(path, role, handleClick) {
               maskChar=" ">
               {() => (
                 <TextField
-                required
-                id="outlined-required"
-                label="CEP"
-                placeholder="Ex: 11111-000"
-                error={touched && cepCheck}
-                helperText={touched && cepCheck ? cepHelp : ''}
-              />
+                  required
+                  id="outlined-required"
+                  label="CEP"
+                  placeholder="Ex: 11111-000"
+                  error={touched && cepCheck}
+                  helperText={touched && cepCheck ? cepHelp : ''}
+                />
               )}
             </InputMask>
             <FormControl variant="filled" size="big">
@@ -173,13 +183,16 @@ function LayoutOrDest(path, role, handleClick) {
                 label="Estado"
                 value={state}
                 onChange={e => setState(e.target.value)}
+                onBlur={verifyState}
                 sx={{ backgroundColor: 'white' }}
                 style={{ width: 210 }}
+                error={touched && state === ''}
               >
                 <MenuItem value="SP">SP</MenuItem>
                 <MenuItem value="MG">MG</MenuItem>
                 <MenuItem value="RJ">RJ</MenuItem>
               </Select>
+              <FormHelperText error>{stateCheck}</FormHelperText>
             </FormControl>
           </div>
           <div className='inputs'>
