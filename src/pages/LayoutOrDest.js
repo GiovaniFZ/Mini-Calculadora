@@ -4,6 +4,7 @@ import Select from '@mui/material/Select';
 import './Layout.css';
 import LayoutPad from './LayoutPad';
 import axios from 'axios';
+import InputMask from 'react-input-mask';
 
 function LayoutOrDest(path, role, handleClick) {
 
@@ -20,16 +21,18 @@ function LayoutOrDest(path, role, handleClick) {
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
   const [touched, setTouched] = useState(false);
-  const [checker, setChecker] = useState(false);
-  const [cpfHelp, setCpfHelp] = useState('');
+  const [cepHelp, setCepHelp] = useState('');
+  const [cepCheck, setCepCheck] = useState(false);
+  const [cpfCheck, setCpfCheck] = useState(false);
+  const [phoneCheck, setPhoneCheck] = useState(false);
 
-  // Configuração da API de cpf
+  // Configuração da API de cep
   function handleCepBlur() {
     let url = 'https://viacep.com.br/ws/' + cep + '/json';
     setTouched(true);
-    if (cep.length === 8) {
-      setChecker(false);
-      setCpfHelp('');
+    if (!cep.includes(" ")) {
+      setCepCheck(false);
+      setCepHelp('');
       axios.get(url)
         .then(function (response) {
           if (response.data.erro !== true) {
@@ -46,8 +49,28 @@ function LayoutOrDest(path, role, handleClick) {
           console.log(error);
         })
     } else {
-      setCpfHelp('Insira um CPF válido!');
-      setChecker(true);
+      setCepHelp('Insira um CPF válido!');
+      setCepCheck(true);
+    }
+  }
+
+  function verifyCpf(){
+    const regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    setTouched(true);
+    if(regex.test(cpf)){
+      setCpfCheck(false);
+    }else{
+      setCpfCheck(true);
+    }
+  }
+
+  function verifyPhone(){
+    const regex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    setTouched(true);
+    if(regex.test(phone)){
+      setPhoneCheck(false);
+    }else{
+      setPhoneCheck(true);
     }
   }
 
@@ -73,30 +96,42 @@ function LayoutOrDest(path, role, handleClick) {
               onFocus={() => setTouched(false)}
               helperText={touched && fullname === '' ? 'Nome é obrigatório!' : ''}
             />
+            <InputMask
+              mask="999.999.999-99"
+              value={cpf}
+              onChange={e => setCpf(e.target.value)}
+              onBlur={verifyCpf}
+              onFocus={() => setTouched(false)}
+              maskChar="_"
+            >
+            {() => (
             <TextField
               required
               id="cpf"
               label="CPF"
-              value={cpf}
-              placeholder="Ex: 111.111.111-11"
-              onChange={e => setCpf(e.target.value)}
-              error={touched && cpf === ''}
-              onBlur={() => setTouched(true)}
+              error={touched && cpfCheck}
+              helperText={touched && cpfCheck ? 'Insira um CPF válido!' : ''}
+            />)}
+            </InputMask>
+            <InputMask
+              mask="(99) 99999-9999"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              onBlur={verifyPhone}
               onFocus={() => setTouched(false)}
-              helperText={touched && cpf === '' ? 'CPF é obrigatório!' : ''}
-            />
+              maskChar=" "
+            >
+            {() => (
             <TextField
               required
               id="phone"
               label="Telefone"
               value={phone}
-              placeholder="Ex: (11) 11111-1111"
-              onChange={e => setPhone(e.target.value)}
-              error={touched && phone === ''}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
-              helperText={touched && phone === '' ? 'Telefone é obrigatório!' : ''}
+              error={touched && phoneCheck}
+              helperText={touched && phoneCheck? 'Insira um telefone válido!' : ''}
             />
+            )}
+            </InputMask>
           </div>
           <div className='inputs'>
             <TextField
@@ -112,18 +147,24 @@ function LayoutOrDest(path, role, handleClick) {
               onFocus={() => setTouched(false)}
               helperText={touched && email === '' ? 'E-Mail é obrigatório!' : ''}
             />
-            <TextField
-              required
-              id="outlined-required"
-              label="CEP"
+            <InputMask
+              mask="99999-999"
               value={cep}
-              placeholder="Ex: 11111-000"
               onChange={e => setCep(e.target.value)}
               onBlur={handleCepBlur}
-              error={touched && checker}
               onFocus={() => setTouched(false)}
-              helperText={touched && checker ? cpfHelp : ''}
-            />
+              maskChar=" ">
+              {() => (
+                <TextField
+                required
+                id="outlined-required"
+                label="CEP"
+                placeholder="Ex: 11111-000"
+                error={touched && cepCheck}
+                helperText={touched && cepCheck ? cepHelp : ''}
+              />
+              )}
+            </InputMask>
             <FormControl variant="filled" size="big">
               <InputLabel id="state">Estado</InputLabel>
               <Select
