@@ -235,8 +235,8 @@ function PacoteEnvio() {
                     <div className="but">
                     <Button
                         variant="contained"
-                        onClick={() => handleClick('/valorfin')}
                         disabled={!weight || !height || !width || !length || !amount || !quantity || !description}
+                        onClick={() => handleClick('/valorfin')}
                     >Avançar
                     </Button>
                     </div>
