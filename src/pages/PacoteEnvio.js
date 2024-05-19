@@ -21,6 +21,10 @@ function PacoteEnvio() {
     const [amount, setAmount] = useState('');
     const [quantity, setQuantity] = useState('');
     const [description, setDescription] = useState('');
+    const [touched, setTouched] = useState(false);
+
+    // Configuração dos campos obrigatórios
+
 
     // Configuração dos dados recebidos
     let data = useLocation().state;
@@ -89,6 +93,10 @@ function PacoteEnvio() {
                             placeholder="Peso em gramas"
                             value={weight}
                             onChange={e => setWeight(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && weight === ''}
+                            helperText={touched && weight === ''? 'Peso é obrigatório!' : ''}
                         />
                         <TextField
                             required
@@ -98,6 +106,10 @@ function PacoteEnvio() {
                             placeholder="Altura em cm"
                             value={height}
                             onChange={e => setHeight(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && height === ''}
+                            helperText={touched && weight === ''? 'Altura é obrigatória!' : ''}
                         />
                         <TextField
                             required
@@ -107,6 +119,10 @@ function PacoteEnvio() {
                             placeholder="Largura em cm"
                             value={width}
                             onChange={e => setWidth(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && width === ''}
+                            helperText={touched && weight === ''? 'Largura é obrigatória!' : ''}
                         />
                         <TextField
                             required
@@ -116,6 +132,10 @@ function PacoteEnvio() {
                             placeholder="Comprimento em cm"
                             value={length}
                             onChange={e => setLength(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && length === ''}
+                            helperText={touched && weight === ''? 'Comprimento é obrigatório!' : ''}
                         />
                     </div>
                     <div className='packageField'>
@@ -157,9 +177,13 @@ function PacoteEnvio() {
                             id="comp"
                             label="Valor da mercadoria"
                             type='number'
-                            placeholder="Digite o valor do pacote em R$"
+                            placeholder="Valor do pacote em R$"
                             value={amount}
                             onChange={e => setAmount(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && amount === ''}
+                            helperText={touched && weight === ''? 'Valor é obrigatório!' : ''}
                         />
                         <TextField
                             required
@@ -167,10 +191,14 @@ function PacoteEnvio() {
                             label="Quantidade de itens"
                             type='number'
                             color="primary"
-                            placeholder="Digite a quantidade de itens"
+                            placeholder="Quantidade de itens"
                             InputProps={{ inputProps: { style: { color: '#fff' } } }}
                             value={quantity}
                             onChange={e => setQuantity(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && quantity === ''}
+                            helperText={touched && weight === ''? 'Quantidade é obrigatória!' : ''}
                         />
                         <label for="itensDesc" className='box_aux'>Descrição dos itens</label>
                         <Textarea
@@ -182,13 +210,18 @@ function PacoteEnvio() {
                             minRows={10}
                             value={description}
                             onChange={e => setDescription(e.target.value)}
+                            onBlur={() => setTouched(true)}
+                            onFocus={() => setTouched(false)}
+                            error={touched && description === ''}
                         >
                         </Textarea>
                     </div>
                     <p></p>
                     <Button
                         variant="contained"
-                        onClick={() => handleClick('/valorfin')}>Avançar
+                        onClick={() => handleClick('/valorfin')}
+                        disabled={!weight || !height || !width || !length || !amount || !quantity || !description}
+                        >Avançar
                     </Button>
                 </form>
             </div>
