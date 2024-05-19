@@ -5,6 +5,7 @@ import './Layout.css';
 import LayoutPad from './LayoutPad';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
+import VerifyTouch from './VerifyTouch';
 
 function LayoutOrDest(path, role, handleClick) {
 
@@ -20,17 +21,17 @@ function LayoutOrDest(path, role, handleClick) {
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
-  const [touched, setTouched] = useState(false);
   const [cepHelp, setCepHelp] = useState('');
   const [cepCheck, setCepCheck] = useState(false);
   const [cpfCheck, setCpfCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
   const [stateCheck, setStateCheck] = useState('');
+  const {touched, markTouched, markUntouched} = VerifyTouch();
 
   // Configuração da API de cep
   function handleCepBlur() {
     let url = 'https://viacep.com.br/ws/' + cep + '/json';
-    setTouched(true);
+    markTouched();
     if (!cep.includes(" ")) {
       setCepCheck(false);
       setCepHelp('');
@@ -43,10 +44,11 @@ function LayoutOrDest(path, role, handleClick) {
             setStreet(response.data.logradouro);
             setState(response.data.uf);
             setComp(response.data.complemento);
+          }else{
+            setCepHelp('Obs: Cep não encontrado.');
           }
         })
         .catch(function (error) {
-          // handle error
           console.log(error);
         })
     } else {
@@ -57,7 +59,7 @@ function LayoutOrDest(path, role, handleClick) {
 
   function verifyCpf() {
     const regex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-    setTouched(true);
+    markTouched();
     if (regex.test(cpf)) {
       setCpfCheck(false);
     } else {
@@ -67,7 +69,7 @@ function LayoutOrDest(path, role, handleClick) {
 
   function verifyPhone() {
     const regex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    setTouched(true);
+    markTouched();
     if (regex.test(phone)) {
       setPhoneCheck(false);
     } else {
@@ -77,9 +79,9 @@ function LayoutOrDest(path, role, handleClick) {
 
   function verifyState() {
     if (state === '') {
-      setTouched(true);
+      markTouched();
       setStateCheck('Estado é obrigatório!');
-    }else{
+    } else {
       setStateCheck('');
     }
   }
@@ -102,16 +104,16 @@ function LayoutOrDest(path, role, handleClick) {
               value={fullname}
               error={touched && fullname === ''}
               onChange={e => setName(e.target.value)}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
-              helperText={touched && fullname === '' ? 'Nome é obrigatório!' : ''}
+              onBlur={markTouched}
+              onFocus={markUntouched}
+            helperText={touched && fullname === '' ? 'Nome é obrigatório!' : ''}
             />
             <InputMask
               mask="999.999.999-99"
               value={cpf}
               onChange={e => setCpf(e.target.value)}
               onBlur={verifyCpf}
-              onFocus={() => setTouched(false)}
+              onFocus={markTouched}
               maskChar="_"
             >
               {() => (
@@ -128,7 +130,7 @@ function LayoutOrDest(path, role, handleClick) {
               value={phone}
               onChange={e => setPhone(e.target.value)}
               onBlur={verifyPhone}
-              onFocus={() => setTouched(false)}
+              onFocus={markUntouched}
               maskChar=" "
             >
               {() => (
@@ -153,8 +155,8 @@ function LayoutOrDest(path, role, handleClick) {
               placeholder="Ex: jose@postaqui.com"
               onChange={e => setEmail(e.target.value)}
               error={touched && email === ''}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
+              onBlur={markTouched}
+              onFocus={markUntouched}
               helperText={touched && email === '' ? 'E-Mail é obrigatório!' : ''}
             />
             <InputMask
@@ -162,7 +164,7 @@ function LayoutOrDest(path, role, handleClick) {
               value={cep}
               onChange={e => setCep(e.target.value)}
               onBlur={handleCepBlur}
-              onFocus={() => setTouched(false)}
+              onFocus={markUntouched}
               maskChar=" ">
               {() => (
                 <TextField
@@ -171,7 +173,7 @@ function LayoutOrDest(path, role, handleClick) {
                   label="CEP"
                   placeholder="Ex: 11111-000"
                   error={touched && cepCheck}
-                  helperText={touched && cepCheck ? cepHelp : ''}
+                  helperText={cepHelp}
                 />
               )}
             </InputMask>
@@ -204,8 +206,8 @@ function LayoutOrDest(path, role, handleClick) {
               placeholder="Ex: São Paulo"
               onChange={e => setCity(e.target.value)}
               error={touched && city === ''}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
+              onBlur={markTouched}
+              onFocus={markUntouched}
               helperText={touched && city === '' ? 'Cidade é obrigatória!' : ''}
             />
             <TextField
@@ -217,8 +219,8 @@ function LayoutOrDest(path, role, handleClick) {
               InputProps={{ inputProps: { style: { background: '#fff' } } }}
               onChange={e => setNeigh(e.target.value)}
               error={touched && neighborhood === ''}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
+              onBlur={markTouched}
+              onFocus={markUntouched}
               helperText={touched && city === '' ? 'Bairro é obrigatório!' : ''}
             />
             <TextField
@@ -229,9 +231,9 @@ function LayoutOrDest(path, role, handleClick) {
               placeholder="Ex: 15 de Novembro"
               onChange={e => setStreet(e.target.value)}
               error={touched && street === ''}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
-              helperText={touched && city === '' ? 'Rua é obrigatória!' : ''}
+              onBlur={markTouched}
+              onFocus={markUntouched}
+            helperText={touched && city === '' ? 'Rua é obrigatória!' : ''}
             />
           </div>
           <div className='inputs'>
@@ -243,8 +245,8 @@ function LayoutOrDest(path, role, handleClick) {
               value={number}
               onChange={e => setNum(e.target.value)}
               error={touched && number === ''}
-              onBlur={() => setTouched(true)}
-              onFocus={() => setTouched(false)}
+              onBlur={markTouched}
+              onFocus={markUntouched}
               helperText={touched && number === '' ? 'Número é obrigatório!' : ''}
             />
             <TextField
