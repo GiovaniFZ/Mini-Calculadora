@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LayoutPad from "./LayoutPad"
 import './Layout.css'
-import { TextField, Switch, FormGroup, FormControlLabel, Button } from "@mui/material";
+import { TextField, Switch, FormGroup, FormControlLabel, Button, FormControl, FormHelperText } from "@mui/material";
 import Textarea from '@mui/joy/Textarea';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
@@ -22,8 +22,9 @@ function PacoteEnvio() {
     const [quantity, setQuantity] = useState('');
     const [description, setDescription] = useState('');
     const [touched, setTouched] = useState(false);
-
-    // Configuração dos campos obrigatórios
+    const [validate, setValidate] = useState(false);
+    const [count, setCount] = useState('');
+    const [checker, setChecker] = useState('');
 
 
     // Configuração dos dados recebidos
@@ -70,12 +71,23 @@ function PacoteEnvio() {
     }
 
     // Função para retornar o menor frete, valor e dias de entrega
-    function returnBest(arr){
+    function returnBest(arr) {
         let menor_frete = arr.reduce((minObj, currentObj) => {
             return currentObj.price < minObj.price ? currentObj : minObj;
-          }, arr[0]);
+        }, arr[0]);
 
-          return menor_frete;
+        return menor_frete;
+    }
+
+    // Função para tratar o comprimento da descrição
+    function validateDescription() {
+        if (description.length < 10 || description.length > 1000) {
+            setValidate(true);
+            setChecker('Mínimo: 10 caracteres!')
+        } else {
+            setValidate(false);
+            setChecker('');
+        }
     }
 
     return (
@@ -96,7 +108,7 @@ function PacoteEnvio() {
                             onBlur={() => setTouched(true)}
                             onFocus={() => setTouched(false)}
                             error={touched && weight === ''}
-                            helperText={touched && weight === ''? 'Peso é obrigatório!' : ''}
+                            helperText={touched && weight === '' ? 'Peso é obrigatório!' : ''}
                         />
                         <TextField
                             required
@@ -109,7 +121,7 @@ function PacoteEnvio() {
                             onBlur={() => setTouched(true)}
                             onFocus={() => setTouched(false)}
                             error={touched && height === ''}
-                            helperText={touched && weight === ''? 'Altura é obrigatória!' : ''}
+                            helperText={touched && height === '' ? 'Altura é obrigatória!' : ''}
                         />
                         <TextField
                             required
@@ -122,7 +134,7 @@ function PacoteEnvio() {
                             onBlur={() => setTouched(true)}
                             onFocus={() => setTouched(false)}
                             error={touched && width === ''}
-                            helperText={touched && weight === ''? 'Largura é obrigatória!' : ''}
+                            helperText={touched && width === '' ? 'Largura é obrigatória!' : ''}
                         />
                         <TextField
                             required
@@ -135,7 +147,7 @@ function PacoteEnvio() {
                             onBlur={() => setTouched(true)}
                             onFocus={() => setTouched(false)}
                             error={touched && length === ''}
-                            helperText={touched && weight === ''? 'Comprimento é obrigatório!' : ''}
+                            helperText={touched && length === '' ? 'Comprimento é obrigatório!' : ''}
                         />
                     </div>
                     <div className='packageField'>
@@ -183,7 +195,7 @@ function PacoteEnvio() {
                             onBlur={() => setTouched(true)}
                             onFocus={() => setTouched(false)}
                             error={touched && amount === ''}
-                            helperText={touched && weight === ''? 'Valor é obrigatório!' : ''}
+                            helperText={touched && amount === '' ? 'Valor é obrigatório!' : ''}
                         />
                         <TextField
                             required
@@ -192,37 +204,42 @@ function PacoteEnvio() {
                             type='number'
                             color="primary"
                             placeholder="Quantidade de itens"
-                            InputProps={{ inputProps: { style: { color: '#fff' } } }}
                             value={quantity}
                             onChange={e => setQuantity(e.target.value)}
                             onBlur={() => setTouched(true)}
                             onFocus={() => setTouched(false)}
                             error={touched && quantity === ''}
-                            helperText={touched && weight === ''? 'Quantidade é obrigatória!' : ''}
+                            helperText={touched && quantity === '' ? 'Quantidade é obrigatória!' : ''}
                         />
-                        <label for="itensDesc" className='box_aux'>Descrição dos itens</label>
-                        <Textarea
-                            className='box'
-                            cols="100"
-                            rows="100"
-                            id="itensDesc"
-                            maxRows={1000}
-                            minRows={10}
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                            onBlur={() => setTouched(true)}
-                            onFocus={() => setTouched(false)}
-                            error={touched && description === ''}
-                        >
-                        </Textarea>
+                        <div className='box_aux'>
+                            <FormControl>
+                                <FormHelperText className="teste">Descrição dos itens</FormHelperText>
+                                <Textarea
+                                    className='box'
+                                    cols="100"
+                                    rows="100"
+                                    id="itensDesc"
+                                    value={description}
+                                    onChange={e => { setDescription(e.target.value); setCount(e.target.value.length) }}
+                                    onBlur={() => { setTouched(true); validateDescription() }}
+                                    onFocus={() => setTouched(false)}
+                                    error={touched && validate}
+                                    placeholder="Mínimo: 10 caracteres"
+                                >
+                                </Textarea>
+                                <FormHelperText>Caracteres: {count}/1000</FormHelperText>
+                                <FormHelperText>{checker}</FormHelperText>
+                            </FormControl>
+                        </div>
                     </div>
-                    <p></p>
+                    <div className="but">
                     <Button
                         variant="contained"
                         onClick={() => handleClick('/valorfin')}
                         disabled={!weight || !height || !width || !length || !amount || !quantity || !description}
-                        >Avançar
+                    >Avançar
                     </Button>
+                    </div>
                 </form>
             </div>
         </div>

@@ -22,9 +22,9 @@ function Origem() {
   const [complement, setComp] = useState('');
   const [touched, setTouched] = useState(false);
 
-  // Configuração de navegação
-  let navigate = useNavigate();
-  function handleClick(path) {
+    // Configuração de navegação
+    let navigate = useNavigate();
+    function handleClick(path) {
 
     // State e uf são o mesmo
     const uf = state;

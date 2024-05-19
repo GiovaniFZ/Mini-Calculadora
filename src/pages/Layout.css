@@ -23,13 +23,22 @@
     justify-content: center;
 }
 
+
 .box{
-  width: 130%;
-  height: 200px;
+  width: 170%;
+  height: 220px;
 }
 
 .box_aux{
-  justify-content:  center;
+  margin-left: -20%;
+}
+
+.teste{
+  margin-left: -20%;
+}
+
+.but{
+  flex-direction: column;
 }
 
 .inputs{
