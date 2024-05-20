@@ -3,31 +3,33 @@ import './Layout.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
 import { Button } from '@mui/material';
+import theme from '../theme/theme.js';
 
 function Destino() {
 
   // Variaveis para lidar com estados
-  const [fullname] = useState('');
-  const [cpf] = useState('');
-  const [phone] = useState('');
-  const [email] = useState('');
-  const [cep] = useState('');
-  const [state] = useState('');
-  const [city] = useState('');
-  const [neighborhood] = useState('');
-  const [street] = useState('');
-  const [number] = useState('');
-  const [complement] = useState('');
+  const [fullname, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [cep, setCep] = useState('');
+  const [state, setState] = useState('');
+  const [neighborhood, setNeigh] = useState('');
+  const [city, setCity] = useState('');
+  const [street, setStreet] = useState('');
+  const [number, setNum] = useState('');
+  const [complement, setComp] = useState('');
+
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
-  const dadosOrigemStr = JSON.stringify(dadosOrigem);
 
   // State e uf são o mesmo
   const uf = state;
 
   // Configuração de navegação
   let navigate = useNavigate();
+
   function handleClick(path) {
     // Jsons
     const address = {
@@ -46,16 +48,29 @@ function Destino() {
     navigate(path, { state: { ...x } });
   }
 
-  const layout = LayoutOrDest('/pacote_envio', 'destino', handleClick)
+  function handleTopClick(){
+    navigate('/');
+  }
+
+  const layout = LayoutOrDest('/pacote_envio', 'destino', handleClick, fullname, setName, cpf, setCpf, phone, setPhone,
+  email, setEmail, cep, setCep, state, setState, neighborhood, setNeigh, city, setCity,
+  street, setStreet, number, setNum, complement, setComp
+)
 
   return (
-    <>
+    <div className='background'>
+    <div className='formsTop'>
       <form id="pathForm" className='paths'>
-        <Button>Origem</Button>
-        <p>{dadosOrigemStr}</p>
+        <Button color={theme.color} onClick={handleTopClick}>Origem</Button>
+        <p>{dadosOrigem.fullname} - {dadosOrigem.cpf}</p>
+        <p>{dadosOrigem.address.cep}</p>
+        <p>{dadosOrigem.address.street} - {dadosOrigem.address.neighborhood}</p>
+        <p>Nº{dadosOrigem.address.number} {dadosOrigem.address.complement}</p>
+        <p>{dadosOrigem.address.city}-{dadosOrigem.address.state}</p>
       </form>
+      </div>
       {layout}
-    </>
+    </div>
   );
 }
 export default Destino;

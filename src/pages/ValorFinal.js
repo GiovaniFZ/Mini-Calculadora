@@ -10,9 +10,10 @@ function ValorFinal() {
     // Configuração de navegação
     let navigate = useNavigate();
 
-    // Configuração dos dados recebidos
-    const dados = useLocation().state;
-    // Obtendo o codugo
+    // Configuração dos data recebidos
+    const arr = useLocation().state;
+    console.log('arr0', arr[0]);
+    console.log('arr1', arr[1]);
 
     // Configuração de post usando Axios
     function axiosPost(path) {
@@ -21,7 +22,7 @@ function ValorFinal() {
 
         axios.post(url,
             {
-                "calculated_id": dados.id // Id que foi retornado na requisição anterior
+                "calculated_id": arr[0].id // Id que foi retornado na requisição anterior
             },
             {
                 params: {
@@ -41,25 +42,54 @@ function ValorFinal() {
             });
     }
 
-    function getCarrier(){
-        let carr = dados.carrier
+    function getCarrier() {
+        let carr = arr[0].carrier
         carr = carr.substr(0, carr.indexOf(' '));
-        if(carr === 'AZUL'){
+        if (carr === 'AZUL') {
             carr = 'AZUL_CARGO';
         }
         return carr;
     }
 
+    function handleTopClick() {
+        navigate('/');
+    }
+
     return (
         <div className="App">
+            <div className="formsTop">
+                <form id="pathForm" className='paths'>
+                    <Button onClick={handleTopClick}>Origem</Button>
+                    <p>{arr[1].sender.fullname} - {arr[1].sender.cpf}</p>
+                    <p>{arr[1].sender.address.cep}</p>
+                    <p>{arr[1].sender.address.street} - {arr[1].sender.address.neighborhood}</p>
+                    <p>Nº{arr[1].sender.address.number} {arr[1].sender.address.complement}</p>
+                    <p>{arr[1].sender.address.city}-{arr[1].sender.address.state}</p>
+                </form>
+                <form id="pathForm" className='paths'>
+                    <Button onClick={handleTopClick}>Destino</Button>
+                    <p>{arr[1].receiver.fullname} - {arr[1].receiver.cpf}</p>
+                    <p>{arr[1].receiver.address.cep}</p>
+                    <p>{arr[1].receiver.address.street} - {arr[1].receiver.address.neighborhood}</p>
+                    <p>Nº{arr[1].receiver.address.number} {arr[1].receiver.address.complement}</p>
+                    <p>{arr[1].receiver.address.city}-{arr[1].receiver.address.state}</p>
+                </form>
+                <form id="pathForm" className='paths'>
+                    <Button onClick={handleTopClick}>Pacote</Button>
+                    <p>AXLXC {arr[1].package.height}{arr[1].package.width}{arr[1].package.length}</p>
+                    <p>Logística reversa: {arr[1].package.reverse ? 'Sim' : 'Não'}</p>
+                    <p>Mãos próprias: {arr[1].package.own_hands ? 'Sim' : 'Não'}</p>
+                    <p>Aviso de recebimento: {arr[1].package.ar ? 'Sim' : 'Não'}</p>
+                    <p>Valor mercadora: {arr[1].amount}</p>
+                </form>
+            </div>
             {layout}
             <div className='background'>
                 <form id="calcForm" className='dados'>
                     <h1>Valor final do frete</h1>
-                    <p>Melhor frete para o seu destino: {dados.carrier}</p>
-                    <p>Valor: R$ {dados.price}</p>
-                    <p>Prazo de entrega: Máximo de</p>
-                    <h2>Economia: R$ {dados.discount}</h2>
+                    <p>Melhor frete para o seu destino: {arr[0].carrier}</p>
+                    <p>Valor: R$ {arr[0].price}</p>
+                    <h2>Economia: R$ {arr[0].discount}</h2>
                     <Button variant="contained" onClick={() => axiosPost('/final')} >Postar</Button>
                 </form>
             </div>

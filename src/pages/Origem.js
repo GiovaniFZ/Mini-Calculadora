@@ -6,17 +6,17 @@ import LayoutOrDest from './LayoutOrDest';
 function Origem() {
 
   // Variaveis para lidar com estados
-  const [fullname] = useState('');
-  const [cpf] = useState('');
-  const [phone] = useState('');
-  const [email] = useState('');
-  const [cep] = useState('');
-  const [state] = useState('');
-  const [neighborhood] = useState('');
-  const [city] = useState('');
-  const [street] = useState('');
-  const [number] = useState('');
-  const [complement] = useState('');
+  const [fullname, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [cep, setCep] = useState('');
+  const [state, setState] = useState('');
+  const [neighborhood, setNeigh] = useState('');
+  const [city, setCity] = useState('');
+  const [street, setStreet] = useState('');
+  const [number, setNum] = useState('');
+  const [complement, setComp] = useState('');
 
   // Configuração de navegação
   let navigate = useNavigate();
@@ -37,7 +37,10 @@ function Origem() {
   }
 
   return (
-    LayoutOrDest('/destino', 'origem', handleClick)
+    LayoutOrDest('/destino', 'origem', handleClick, fullname, setName, cpf, setCpf, phone, setPhone,
+      email, setEmail, cep, setCep, state, setState, neighborhood, setNeigh, city, setCity,
+      street, setStreet, number, setNum, complement, setComp
+    )
   );
 }
 export default Origem;

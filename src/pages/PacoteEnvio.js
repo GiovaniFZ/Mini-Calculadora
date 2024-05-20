@@ -42,18 +42,18 @@ function PacoteEnvio() {
             weight, height, width, length, reverse, ar, own_hands, information
         }
 
-        let x = {
+        let jsonPack = {
             ...data, // inclui diretamente os dados de data
             "package": pack
         }
 
-        // Requisição para API
-        let jsonString = JSON.stringify(x);
-        axiosPost(jsonString, path);
+        axiosPost(path, jsonPack);
     }
 
     // Configuração de post usando Axios
-    function axiosPost(jsonString, path) {
+    function axiosPost(path, jsonPack) {
+        // Tranformando em String
+        let jsonString = JSON.stringify(jsonPack);
         let melhor;
         const url = 'https://f29faec4-6487-4b60-882f-383b4054cc32.mock.pstmn.io/shipping_calculate'
         const headers = {
@@ -62,8 +62,9 @@ function PacoteEnvio() {
         axios.post(url, jsonString, headers)
             .then(function (response) {
                 melhor = returnBest(response.data.shipment);
+                const arr = [melhor, jsonPack]
                 // Navigate
-                navigate(path, { state: melhor });
+                navigate(path, { state: arr });
             })
             .catch(function (error) { // Tratamento do erro
                 console.log(error);
@@ -90,8 +91,32 @@ function PacoteEnvio() {
         }
     }
 
+    function handleTopClick() {
+        navigate('/')
+    }
+
+    console.log('json', data);
+
     return (
         <div className='App'>
+            <div className="formsTop">
+            <form id="pathForm" className='paths'>
+                <Button onClick={handleTopClick}>Origem</Button>
+                <p>{data.sender.fullname} - {data.sender.cpf}</p>
+                <p>{data.sender.address.cep}</p>
+                <p>{data.sender.address.street} - {data.sender.address.neighborhood}</p>
+                <p>Nº{data.sender.address.number} {data.sender.address.complement}</p>
+                <p>{data.sender.address.city}-{data.sender.address.state}</p>
+            </form>
+            <form id="pathForm" className='paths'>
+                <Button onClick={handleTopClick}>Destino</Button>
+                <p>{data.receiver.fullname} - {data.receiver.cpf}</p>
+                <p>{data.receiver.address.cep}</p>
+                <p>{data.receiver.address.street} - {data.receiver.address.neighborhood}</p>
+                <p>Nº{data.receiver.address.number} {data.receiver.address.complement}</p>
+                <p>{data.receiver.address.city}-{data.receiver.address.state}</p>
+            </form>
+            </div>
             {layout}
             <div className='background'>
                 <form id="calcForm" className="dados">
@@ -233,12 +258,12 @@ function PacoteEnvio() {
                         </div>
                     </div>
                     <div className="but">
-                    <Button
-                        variant="contained"
-                        disabled={!weight || !height || !width || !length || !amount || !quantity || !description}
-                        onClick={() => handleClick('/valorfin')}
-                    >Avançar
-                    </Button>
+                        <Button
+                            variant="contained"
+                            //disabled={!weight || !height || !width || !length || !amount || !quantity || !description}
+                            onClick={() => handleClick('/valorfin')}
+                        >Avançar
+                        </Button>
                     </div>
                 </form>
             </div>

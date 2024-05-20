@@ -7,20 +7,11 @@ import axios from 'axios';
 import InputMask from 'react-input-mask';
 import VerifyTouch from './VerifyTouch';
 
-function LayoutOrDest(path, role, handleClick) {
+function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, phone, setPhone, email, setEmail, 
+  cep, setCep, state, setState, neighborhood, setNeigh, city, setCity, street, setStreet, number, setNum , complement,
+  setComp
+) {
 
-  // Variaveis para lidar com estados
-  const [fullname, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [cep, setCep] = useState('');
-  const [state, setState] = useState('');
-  const [neighborhood, setNeigh] = useState('');
-  const [city, setCity] = useState('');
-  const [street, setStreet] = useState('');
-  const [number, setNum] = useState('');
-  const [complement, setComp] = useState('');
   const [cepHelp, setCepHelp] = useState('');
   const [cepCheck, setCepCheck] = useState(false);
   const [cpfCheck, setCpfCheck] = useState(false);
