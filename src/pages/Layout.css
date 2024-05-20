@@ -75,6 +75,11 @@
   gap: 20px;
 }
 
+.progress{
+  display: block;
+  margin-top: 3%;
+}
+
 .titulo{
   color: white;
 }

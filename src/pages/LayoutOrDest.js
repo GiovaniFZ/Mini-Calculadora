@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MenuItem, Button, InputLabel, FormControl, TextField, FormHelperText } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import Select from '@mui/material/Select';
 import './Layout.css';
 import LayoutPad from './LayoutPad';
@@ -7,8 +8,8 @@ import axios from 'axios';
 import InputMask from 'react-input-mask';
 import VerifyTouch from './VerifyTouch';
 
-function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, phone, setPhone, email, setEmail, 
-  cep, setCep, state, setState, neighborhood, setNeigh, city, setCity, street, setStreet, number, setNum , complement,
+function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, phone, setPhone, email, setEmail,
+  cep, setCep, state, setState, neighborhood, setNeigh, city, setCity, street, setStreet, number, setNum, complement,
   setComp
 ) {
 
@@ -17,13 +18,15 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
   const [cpfCheck, setCpfCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
   const [stateCheck, setStateCheck] = useState('');
-  const {touched, markTouched, markUntouched} = VerifyTouch();
+  const { touched, markTouched, markUntouched } = VerifyTouch();
+  const [loading, setLoading] = useState(false);
 
   // Configuração da API de cep
   function handleCepBlur() {
     let url = 'https://viacep.com.br/ws/' + cep + '/json';
     markTouched();
     if (!cep.includes(" ")) {
+      setLoading(true);
       setCepCheck(false);
       setCepHelp('');
       axios.get(url)
@@ -35,12 +38,15 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             setStreet(response.data.logradouro);
             setState(response.data.uf);
             setComp(response.data.complemento);
-          }else{
+            setLoading(false);
+          } else {
             setCepHelp('Obs: Cep não encontrado.');
+            setLoading(false);
           }
         })
         .catch(function (error) {
           console.log(error);
+          setLoading(false);
         })
     } else {
       setCepHelp('Insira um CPF válido!');
@@ -97,7 +103,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               onChange={e => setName(e.target.value)}
               onBlur={markTouched}
               onFocus={markUntouched}
-            helperText={touched && fullname === '' ? 'Nome é obrigatório!' : ''}
+              helperText={touched && fullname === '' ? 'Nome é obrigatório!' : ''}
             />
             <InputMask
               mask="999.999.999-99"
@@ -224,7 +230,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               error={touched && street === ''}
               onBlur={markTouched}
               onFocus={markUntouched}
-            helperText={touched && city === '' ? 'Rua é obrigatória!' : ''}
+              helperText={touched && city === '' ? 'Rua é obrigatória!' : ''}
             />
           </div>
           <div className='inputs'>
@@ -250,9 +256,16 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
           </div>
           <Button
             variant="contained"
-           // disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
+            disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
             onClick={() => handleClick(path)}>Avançar
           </Button>
+          <div className='progress'>
+            {loading && (
+              <CircularProgress
+                color='secondary'
+              />
+            )}
+          </div>
         </form>
       </div>
     </div>

@@ -5,12 +5,13 @@ import { TextField, Switch, FormGroup, FormControlLabel, Button, FormControl, Fo
 import Textarea from '@mui/joy/Textarea';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
+import Routing from "./Routing";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 function PacoteEnvio() {
     const layout = LayoutPad();
 
-    // Configuração de variáveis do usuário
     const [weight, setWeight] = useState('');
     const [height, setHeight] = useState('');
     const [width, setWidth] = useState('');
@@ -25,7 +26,8 @@ function PacoteEnvio() {
     const [validate, setValidate] = useState(false);
     const [count, setCount] = useState('');
     const [checker, setChecker] = useState('');
-
+    const [loading, setLoading] = useState(false);
+    const { goToOrigem, goToDest } = Routing();
 
     // Configuração dos dados recebidos
     let data = useLocation().state;
@@ -52,6 +54,7 @@ function PacoteEnvio() {
 
     // Configuração de post usando Axios
     function axiosPost(path, jsonPack) {
+        setLoading(true);
         // Tranformando em String
         let jsonString = JSON.stringify(jsonPack);
         let melhor;
@@ -63,11 +66,13 @@ function PacoteEnvio() {
             .then(function (response) {
                 melhor = returnBest(response.data.shipment);
                 const arr = [melhor, jsonPack]
+                setLoading(false);
                 // Navigate
                 navigate(path, { state: arr });
             })
             .catch(function (error) { // Tratamento do erro
                 console.log(error);
+                setLoading(false);
             });
     }
 
@@ -91,31 +96,30 @@ function PacoteEnvio() {
         }
     }
 
-    function handleTopClick() {
-        navigate('/')
+    function handleDestClick() {
+        const dataSender = data.sender;
+        goToDest(dataSender);
     }
-
-    console.log('json', data);
 
     return (
         <div className='App'>
             <div className="formsTop">
-            <form id="pathForm" className='paths'>
-                <Button onClick={handleTopClick}>Origem</Button>
-                <p>{data.sender.fullname} - {data.sender.cpf}</p>
-                <p>{data.sender.address.cep}</p>
-                <p>{data.sender.address.street} - {data.sender.address.neighborhood}</p>
-                <p>Nº{data.sender.address.number} {data.sender.address.complement}</p>
-                <p>{data.sender.address.city}-{data.sender.address.state}</p>
-            </form>
-            <form id="pathForm" className='paths'>
-                <Button onClick={handleTopClick}>Destino</Button>
-                <p>{data.receiver.fullname} - {data.receiver.cpf}</p>
-                <p>{data.receiver.address.cep}</p>
-                <p>{data.receiver.address.street} - {data.receiver.address.neighborhood}</p>
-                <p>Nº{data.receiver.address.number} {data.receiver.address.complement}</p>
-                <p>{data.receiver.address.city}-{data.receiver.address.state}</p>
-            </form>
+                <form id="pathForm" className='paths'>
+                    <Button onClick={goToOrigem}>Origem</Button>
+                    <p>{data.sender.fullname} - {data.sender.cpf}</p>
+                    <p>{data.sender.address.cep}</p>
+                    <p>{data.sender.address.street} - {data.sender.address.neighborhood}</p>
+                    <p>Nº{data.sender.address.number} {data.sender.address.complement}</p>
+                    <p>{data.sender.address.city}-{data.sender.address.state}</p>
+                </form>
+                <form id="pathForm" className='paths'>
+                    <Button onClick={handleDestClick}>Destino</Button>
+                    <p>{data.receiver.fullname} - {data.receiver.cpf}</p>
+                    <p>{data.receiver.address.cep}</p>
+                    <p>{data.receiver.address.street} - {data.receiver.address.neighborhood}</p>
+                    <p>Nº{data.receiver.address.number} {data.receiver.address.complement}</p>
+                    <p>{data.receiver.address.city}-{data.receiver.address.state}</p>
+                </form>
             </div>
             {layout}
             <div className='background'>
@@ -253,17 +257,24 @@ function PacoteEnvio() {
                                 >
                                 </Textarea>
                                 <FormHelperText>Caracteres: {count}/1000</FormHelperText>
-                                <FormHelperText>{checker}</FormHelperText>
+                                <FormHelperText error>{checker}</FormHelperText>
                             </FormControl>
                         </div>
                     </div>
                     <div className="but">
                         <Button
                             variant="contained"
-                            //disabled={!weight || !height || !width || !length || !amount || !quantity || !description}
+                            disabled={!weight || !height || !width || !length || !amount || !quantity || validate || !description}
                             onClick={() => handleClick('/valorfin')}
                         >Avançar
                         </Button>
+                    </div>
+                    <div className='progress'>
+                        {loading && (
+                            <CircularProgress
+                                color='secondary'
+                            />
+                        )}
                     </div>
                 </form>
             </div>

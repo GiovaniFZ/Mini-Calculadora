@@ -3,23 +3,26 @@ import './Layout.css'
 import { Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import Routing from "./Routing";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 
 function ValorFinal() {
     const layout = LayoutPad();
+    const [loading, setLoading] = useState('');
+    const {goToOrigem, goToDest, goToPacote} = Routing();
 
     // Configuração de navegação
     let navigate = useNavigate();
 
     // Configuração dos data recebidos
     const arr = useLocation().state;
-    console.log('arr0', arr[0]);
-    console.log('arr1', arr[1]);
 
     // Configuração de post usando Axios
     function axiosPost(path) {
         const url = 'https://f29faec4-6487-4b60-882f-383b4054cc32.mock.pstmn.io/posting';
         const carrier = getCarrier();
-
+        setLoading(true);
         axios.post(url,
             {
                 "calculated_id": arr[0].id // Id que foi retornado na requisição anterior
@@ -33,7 +36,7 @@ function ValorFinal() {
                 },
             }
         ).then(function (response) {
-            console.log("response", response.data);
+            setLoading(false);
             // Navigate
             navigate(path, { state: response.data.code });
         })
@@ -51,15 +54,21 @@ function ValorFinal() {
         return carr;
     }
 
-    function handleTopClick() {
-        navigate('/');
+    function handleDestClick(){
+        const dataSender = arr[1].sender;
+        goToDest(dataSender);
+    }
+
+    function handlePackClick(){
+        const dataPack = arr[1];
+        goToPacote(dataPack);
     }
 
     return (
         <div className="App">
             <div className="formsTop">
                 <form id="pathForm" className='paths'>
-                    <Button onClick={handleTopClick}>Origem</Button>
+                    <Button onClick={goToOrigem}>Origem</Button>
                     <p>{arr[1].sender.fullname} - {arr[1].sender.cpf}</p>
                     <p>{arr[1].sender.address.cep}</p>
                     <p>{arr[1].sender.address.street} - {arr[1].sender.address.neighborhood}</p>
@@ -67,7 +76,7 @@ function ValorFinal() {
                     <p>{arr[1].sender.address.city}-{arr[1].sender.address.state}</p>
                 </form>
                 <form id="pathForm" className='paths'>
-                    <Button onClick={handleTopClick}>Destino</Button>
+                    <Button onClick={handleDestClick}>Destino</Button>
                     <p>{arr[1].receiver.fullname} - {arr[1].receiver.cpf}</p>
                     <p>{arr[1].receiver.address.cep}</p>
                     <p>{arr[1].receiver.address.street} - {arr[1].receiver.address.neighborhood}</p>
@@ -75,12 +84,12 @@ function ValorFinal() {
                     <p>{arr[1].receiver.address.city}-{arr[1].receiver.address.state}</p>
                 </form>
                 <form id="pathForm" className='paths'>
-                    <Button onClick={handleTopClick}>Pacote</Button>
-                    <p>AXLXC {arr[1].package.height}{arr[1].package.width}{arr[1].package.length}</p>
+                    <Button onClick={handlePackClick}>Pacote</Button>
+                    <p>AXLXC: {arr[1].package.height} X {arr[1].package.width} X {arr[1].package.length}</p>
                     <p>Logística reversa: {arr[1].package.reverse ? 'Sim' : 'Não'}</p>
                     <p>Mãos próprias: {arr[1].package.own_hands ? 'Sim' : 'Não'}</p>
                     <p>Aviso de recebimento: {arr[1].package.ar ? 'Sim' : 'Não'}</p>
-                    <p>Valor mercadora: {arr[1].amount}</p>
+                    <p>Valor mercadoria: R$ {arr[1].package.information.amount}</p>
                 </form>
             </div>
             {layout}
@@ -91,6 +100,13 @@ function ValorFinal() {
                     <p>Valor: R$ {arr[0].price}</p>
                     <h2>Economia: R$ {arr[0].discount}</h2>
                     <Button variant="contained" onClick={() => axiosPost('/final')} >Postar</Button>
+                    <div className='progress'>
+                        {loading && (
+                            <CircularProgress
+                                color='secondary'
+                            />
+                        )}
+                    </div>
                 </form>
             </div>
         </div>

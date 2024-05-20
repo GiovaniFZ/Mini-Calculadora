@@ -3,6 +3,7 @@ import './Layout.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
 import { Button } from '@mui/material';
+import Routing from './Routing';
 
 function Destino() {
 
@@ -18,6 +19,7 @@ function Destino() {
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
+  const {goToOrigem} = Routing();
 
 
   // Configuração dos dados recebidos
@@ -25,6 +27,7 @@ function Destino() {
 
   // State e uf são o mesmo
   const uf = state;
+  console.log('dados', dadosOrigem);
 
   // Configuração de navegação
   let navigate = useNavigate();
@@ -39,16 +42,12 @@ function Destino() {
     }
 
     // Combinando jsons
-    const x = {
+    const jsons = {
       "sender": dadosOrigem,
       "receiver": receiver
     }
 
-    navigate(path, { state: { ...x } });
-  }
-
-  function handleTopClick(){
-    navigate('/');
+    navigate(path, { state: { ...jsons } });
   }
 
   const layout = LayoutOrDest('/pacote_envio', 'destino', handleClick, fullname, setName, cpf, setCpf, phone, setPhone,
@@ -60,7 +59,7 @@ function Destino() {
     <div className='background'>
     <div className='formsTop'>
       <form id="pathForm" className='paths'>
-        <Button color="secondary" onClick={handleTopClick}>Origem</Button>
+        <Button color="secondary" onClick={goToOrigem}>Origem</Button>
         <p>{dadosOrigem.fullname} - {dadosOrigem.cpf}</p>
         <p>{dadosOrigem.address.cep}</p>
         <p>{dadosOrigem.address.street} - {dadosOrigem.address.neighborhood}</p>
