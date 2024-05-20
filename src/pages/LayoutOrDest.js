@@ -259,7 +259,7 @@ function LayoutOrDest(path, role, handleClick) {
           </div>
           <Button
             variant="contained"
-            disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
+           // disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
             onClick={() => handleClick(path)}>Avançar
           </Button>
         </form>

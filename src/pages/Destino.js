@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Layout.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
+import { Button } from '@mui/material';
 
 function Destino() {
 
@@ -20,6 +21,7 @@ function Destino() {
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
+  const dadosOrigemStr = JSON.stringify(dadosOrigem);
 
   // State e uf são o mesmo
   const uf = state;
@@ -44,8 +46,16 @@ function Destino() {
     navigate(path, { state: { ...x } });
   }
 
+  const layout = LayoutOrDest('/pacote_envio', 'destino', handleClick)
+
   return (
-    LayoutOrDest('/pacote_envio', 'destino', handleClick)
+    <>
+      <form id="pathForm" className='paths'>
+        <Button>Origem</Button>
+        <p>{dadosOrigemStr}</p>
+      </form>
+      {layout}
+    </>
   );
 }
 export default Destino;
