@@ -3,7 +3,6 @@ import './Layout.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
 import { Button } from '@mui/material';
-import theme from '../theme/theme.js';
 
 function Destino() {
 
@@ -61,7 +60,7 @@ function Destino() {
     <div className='background'>
     <div className='formsTop'>
       <form id="pathForm" className='paths'>
-        <Button color={theme.color} onClick={handleTopClick}>Origem</Button>
+        <Button color="secondary" onClick={handleTopClick}>Origem</Button>
         <p>{dadosOrigem.fullname} - {dadosOrigem.cpf}</p>
         <p>{dadosOrigem.address.cep}</p>
         <p>{dadosOrigem.address.street} - {dadosOrigem.address.neighborhood}</p>
