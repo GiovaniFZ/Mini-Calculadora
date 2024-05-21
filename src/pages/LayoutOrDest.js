@@ -18,6 +18,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
   const [cpfCheck, setCpfCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
   const [stateCheck, setStateCheck] = useState('');
+  const [emailCheck, setEmailCheck] = useState(false);
   const { touched, markTouched, markUntouched } = VerifyTouch();
   const [loading, setLoading] = useState(false);
 
@@ -80,6 +81,16 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
       setStateCheck('Estado é obrigatório!');
     } else {
       setStateCheck('');
+    }
+  }
+
+  function verifyEmail(){
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    markTouched();
+    if(regex.test(email)){
+      setEmailCheck(false);
+    }else{
+      setEmailCheck(true);
     }
   }
 
@@ -151,10 +162,10 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               value={email}
               placeholder="Ex: jose@postaqui.com"
               onChange={e => setEmail(e.target.value)}
-              error={touched && email === ''}
-              onBlur={markTouched}
+              error={touched && emailCheck}
+              onBlur={verifyEmail}
               onFocus={markUntouched}
-              helperText={touched && email === '' ? 'E-Mail é obrigatório!' : ''}
+              helperText={touched && emailCheck ? 'Insira um email válido!' : ''}
             />
             <InputMask
               mask="99999-999"
