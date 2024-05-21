@@ -112,7 +112,7 @@ function PacoteEnvio() {
                     <p>{data.sender.address.cep}</p>
                     <p>{data.sender.address.street} - {data.sender.address.neighborhood}</p>
                     <p>Nº{data.sender.address.number} {data.sender.address.complement}</p>
-                    <p>{data.sender.address.city}-{data.sender.address.state}</p>
+                    <p>{data.sender.address.city}-{data.sender.address.uf}</p>
                 </form>
                 <form id="pathForm" className='paths'>
                     <Button onClick={handleDestClick}>Destino</Button>
@@ -120,7 +120,7 @@ function PacoteEnvio() {
                     <p>{data.receiver.address.cep}</p>
                     <p>{data.receiver.address.street} - {data.receiver.address.neighborhood}</p>
                     <p>Nº{data.receiver.address.number} {data.receiver.address.complement}</p>
-                    <p>{data.receiver.address.city}-{data.receiver.address.state}</p>
+                    <p>{data.receiver.address.city}-{data.receiver.address.uf}</p>
                 </form>
             </div>
             {layout}

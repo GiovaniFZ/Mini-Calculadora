@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Layout.css'
 import { useNavigate } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
+import setStateByUf from './SetStateByUf';
 
 function Origem() {
 
@@ -11,20 +12,21 @@ function Origem() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
-  const [state, setState] = useState('');
+  const [uf, setUf] = useState('');
   const [neighborhood, setNeigh] = useState('');
   const [city, setCity] = useState('');
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
+  // State
+  let state = '';
 
   // Configuração de navegação
   let navigate = useNavigate();
   function handleClick(path) {
-
-    // State e uf são o mesmo
-    const uf = state;
-
+  // State
+    state = setStateByUf(uf, state);
+    
     // JSON para address
     const address = {
       cep, state, uf, city, neighborhood, street, number, complement
@@ -38,8 +40,8 @@ function Origem() {
 
   return (
     LayoutOrDest('/destino', 'origem', handleClick, fullname, setName, cpf, setCpf, phone, setPhone,
-      email, setEmail, cep, setCep, state, setState, neighborhood, setNeigh, city, setCity,
-      street, setStreet, number, setNum, complement, setComp
+    email, setEmail, cep, setCep, uf, setUf, neighborhood, setNeigh, city, setCity,
+    street, setStreet, number, setNum, complement, setComp
     )
   );
 }

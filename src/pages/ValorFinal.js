@@ -73,7 +73,7 @@ function ValorFinal() {
                     <p>{arr[1].sender.address.cep}</p>
                     <p>{arr[1].sender.address.street} - {arr[1].sender.address.neighborhood}</p>
                     <p>Nº{arr[1].sender.address.number} {arr[1].sender.address.complement}</p>
-                    <p>{arr[1].sender.address.city}-{arr[1].sender.address.state}</p>
+                    <p>{arr[1].sender.address.city}-{arr[1].sender.address.uf}</p>
                 </form>
                 <form id="pathForm" className='paths'>
                     <Button onClick={handleDestClick}>Destino</Button>
@@ -81,7 +81,7 @@ function ValorFinal() {
                     <p>{arr[1].receiver.address.cep}</p>
                     <p>{arr[1].receiver.address.street} - {arr[1].receiver.address.neighborhood}</p>
                     <p>Nº{arr[1].receiver.address.number} {arr[1].receiver.address.complement}</p>
-                    <p>{arr[1].receiver.address.city}-{arr[1].receiver.address.state}</p>
+                    <p>{arr[1].receiver.address.city}-{arr[1].receiver.address.uf}</p>
                 </form>
                 <form id="pathForm" className='paths'>
                     <Button onClick={handlePackClick}>Pacote</Button>

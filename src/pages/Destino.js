@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
 import { Button } from '@mui/material';
 import Routing from './Routing';
+import setState from './SetStateByUf';
 
 function Destino() {
 
@@ -13,26 +14,26 @@ function Destino() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [cep, setCep] = useState('');
-  const [state, setState] = useState('');
+  const [uf, setUf] = useState('');
   const [neighborhood, setNeigh] = useState('');
   const [city, setCity] = useState('');
   const [street, setStreet] = useState('');
   const [number, setNum] = useState('');
   const [complement, setComp] = useState('');
   const {goToOrigem} = Routing();
+  let state = '';
 
 
   // Configuração dos dados recebidos
   const dadosOrigem = useLocation().state;
 
-  // State e uf são o mesmo
-  const uf = state;
-  console.log('dados', dadosOrigem);
-
   // Configuração de navegação
   let navigate = useNavigate();
 
   function handleClick(path) {
+    // State
+    state = setState(uf, state);
+
     // Jsons
     const address = {
       cep, state, uf, city, neighborhood, street, number, complement
@@ -51,7 +52,7 @@ function Destino() {
   }
 
   const layout = LayoutOrDest('/pacote_envio', 'destino', handleClick, fullname, setName, cpf, setCpf, phone, setPhone,
-  email, setEmail, cep, setCep, state, setState, neighborhood, setNeigh, city, setCity,
+  email, setEmail, cep, setCep, uf, setUf, neighborhood, setNeigh, city, setCity,
   street, setStreet, number, setNum, complement, setComp
 )
 
@@ -64,7 +65,7 @@ function Destino() {
         <p>{dadosOrigem.address.cep}</p>
         <p>{dadosOrigem.address.street} - {dadosOrigem.address.neighborhood}</p>
         <p>Nº{dadosOrigem.address.number} {dadosOrigem.address.complement}</p>
-        <p>{dadosOrigem.address.city}-{dadosOrigem.address.state}</p>
+        <p>{dadosOrigem.address.city}-{dadosOrigem.address.uf}</p>
       </form>
       </div>
       {layout}

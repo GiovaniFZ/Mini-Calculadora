@@ -9,7 +9,7 @@ import InputMask from 'react-input-mask';
 import VerifyTouch from './VerifyTouch';
 
 function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, phone, setPhone, email, setEmail,
-  cep, setCep, state, setState, neighborhood, setNeigh, city, setCity, street, setStreet, number, setNum, complement,
+  cep, setCep, uf, setUf, neighborhood, setNeigh, city, setCity, street, setStreet, number, setNum, complement,
   setComp
 ) {
 
@@ -17,7 +17,6 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
   const [cepCheck, setCepCheck] = useState(false);
   const [cpfCheck, setCpfCheck] = useState(false);
   const [phoneCheck, setPhoneCheck] = useState(false);
-  const [stateCheck, setStateCheck] = useState('');
   const [emailCheck, setEmailCheck] = useState(false);
   const { touched, markTouched, markUntouched } = VerifyTouch();
   const [loading, setLoading] = useState(false);
@@ -37,7 +36,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             setCity(response.data.localidade);
             setNeigh(response.data.bairro);
             setStreet(response.data.logradouro);
-            setState(response.data.uf);
+            setUf(response.data.uf);
             setComp(response.data.complemento);
             setLoading(false);
           } else {
@@ -50,7 +49,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
           setLoading(false);
         })
     } else {
-      setCepHelp('Insira um CPF válido!');
+      setCepHelp('Insira um CEP válido!');
       setCepCheck(true);
     }
   }
@@ -75,21 +74,12 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
     }
   }
 
-  function verifyState() {
-    if (state === '') {
-      markTouched();
-      setStateCheck('Estado é obrigatório!');
-    } else {
-      setStateCheck('');
-    }
-  }
-
-  function verifyEmail(){
+  function verifyEmail() {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     markTouched();
-    if(regex.test(email)){
+    if (regex.test(email)) {
       setEmailCheck(false);
-    }else{
+    } else {
       setEmailCheck(true);
     }
   }
@@ -129,8 +119,8 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
                   required
                   id="cpf"
                   label="CPF"
-                  error={touched && cpfCheck}
-                  helperText={touched && cpfCheck ? 'Insira um CPF válido!' : ''}
+                  error={touched && (cpfCheck || cpf === '')}
+                  helperText={touched && (cpfCheck || cpf === '') ? 'Insira um CPF válido!' : ''}
                 />)}
             </InputMask>
             <InputMask
@@ -147,8 +137,8 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
                   id="phone"
                   label="Telefone"
                   value={phone}
-                  error={touched && phoneCheck}
-                  helperText={touched && phoneCheck ? 'Insira um telefone válido!' : ''}
+                  error={touched && (phoneCheck || phone === '')}
+                  helperText={touched && (phoneCheck || phone === '') ? 'Insira um telefone válido!' : ''}
                 />
               )}
             </InputMask>
@@ -162,10 +152,10 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               value={email}
               placeholder="Ex: jose@postaqui.com"
               onChange={e => setEmail(e.target.value)}
-              error={touched && emailCheck}
+              error={touched && (emailCheck || email === '')}
               onBlur={verifyEmail}
               onFocus={markUntouched}
-              helperText={touched && emailCheck ? 'Insira um email válido!' : ''}
+              helperText={touched && (emailCheck || email === '') ? 'Insira um email válido!' : ''}
             />
             <InputMask
               mask="99999-999"
@@ -180,29 +170,34 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
                   id="outlined-required"
                   label="CEP"
                   placeholder="Ex: 11111-000"
-                  error={touched && cepCheck}
-                  helperText={cepHelp}
+                  error={touched && (cepCheck || cep === '')}
+                  helperText={touched && (cepCheck || cep === '') ? 'Insira um CEP válido!' : cepHelp}
                 />
               )}
             </InputMask>
             <FormControl variant="filled" size="big">
               <InputLabel id="state">Estado</InputLabel>
               <Select
-                labelId="state"
-                id="state"
+                labelId="uf"
+                id="uf"
                 label="Estado"
-                value={state}
-                onChange={e => setState(e.target.value)}
-                onBlur={verifyState}
+                value={uf}
+                onChange={e => setUf(e.target.value)}
+                onBlur={markTouched}
                 sx={{ backgroundColor: 'white' }}
                 style={{ width: 210 }}
-                error={touched && stateCheck}
+                error={touched && uf === ''}
               >
                 <MenuItem value="SP">SP</MenuItem>
                 <MenuItem value="MG">MG</MenuItem>
                 <MenuItem value="RJ">RJ</MenuItem>
+                <MenuItem value="OUT">Outro</MenuItem>
               </Select>
-              <FormHelperText error>{stateCheck}</FormHelperText>
+              {touched && uf === '' && (
+                <FormHelperText error>
+                  Estado é obrigatório!
+                </FormHelperText>
+              )}
             </FormControl>
           </div>
           <div className='inputs'>
@@ -270,7 +265,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
           </div>
           <Button
             variant="contained"
-            disabled={!fullname || !cpf || !phone || !email || !cep || !state || !city || !neighborhood || !street || !number}
+            disabled={!fullname || !cpf || !phone || !email || !cep || !uf || !city || !neighborhood || !street || !number}
             onClick={() => handleClick(path)}>Avançar
           </Button>
           <div className='progress'>
