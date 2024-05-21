@@ -3,8 +3,8 @@ import './Layout.css'
 import { useNavigate, useLocation } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
 import { Button } from '@mui/material';
-import Routing from './Routing';
-import setState from './SetStateByUf';
+import Routing from '../components/Routing.js';
+import setStateByUf from '../components/SetStateByUf.js';
 
 function Destino() {
 
@@ -32,7 +32,7 @@ function Destino() {
 
   function handleClick(path) {
     // State
-    state = setState(uf, state);
+    state = setStateByUf(uf, state);
 
     // Jsons
     const address = {

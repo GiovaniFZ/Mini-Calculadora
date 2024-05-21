@@ -3,7 +3,7 @@ import './Layout.css'
 import { Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import Routing from "./Routing";
+import Routing from '../components/Routing.js';
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 
@@ -68,7 +68,7 @@ function ValorFinal() {
         <div className="App">
             <div className="formsTop">
                 <form id="pathForm" className='paths'>
-                    <Button onClick={goToOrigem}>Origem</Button>
+                    <Button color="secondary" onClick={goToOrigem}>Origem</Button>
                     <p>{arr[1].sender.fullname} - {arr[1].sender.cpf}</p>
                     <p>{arr[1].sender.address.cep}</p>
                     <p>{arr[1].sender.address.street} - {arr[1].sender.address.neighborhood}</p>
@@ -76,7 +76,7 @@ function ValorFinal() {
                     <p>{arr[1].sender.address.city}-{arr[1].sender.address.uf}</p>
                 </form>
                 <form id="pathForm" className='paths'>
-                    <Button onClick={handleDestClick}>Destino</Button>
+                    <Button color="secondary" onClick={handleDestClick}>Destino</Button>
                     <p>{arr[1].receiver.fullname} - {arr[1].receiver.cpf}</p>
                     <p>{arr[1].receiver.address.cep}</p>
                     <p>{arr[1].receiver.address.street} - {arr[1].receiver.address.neighborhood}</p>
@@ -84,7 +84,7 @@ function ValorFinal() {
                     <p>{arr[1].receiver.address.city}-{arr[1].receiver.address.uf}</p>
                 </form>
                 <form id="pathForm" className='paths'>
-                    <Button onClick={handlePackClick}>Pacote</Button>
+                    <Button color="secondary" onClick={handlePackClick}>Pacote</Button>
                     <p>AXLXC: {arr[1].package.height} X {arr[1].package.width} X {arr[1].package.length}</p>
                     <p>Logística reversa: {arr[1].package.reverse ? 'Sim' : 'Não'}</p>
                     <p>Mãos próprias: {arr[1].package.own_hands ? 'Sim' : 'Não'}</p>

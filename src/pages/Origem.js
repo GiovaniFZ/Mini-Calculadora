@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Layout.css'
 import { useNavigate } from 'react-router-dom';
 import LayoutOrDest from './LayoutOrDest';
-import setStateByUf from './SetStateByUf';
+import setStateByUf from '../components/SetStateByUf.js';
 
 function Origem() {
 

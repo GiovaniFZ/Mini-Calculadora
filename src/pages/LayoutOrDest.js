@@ -97,6 +97,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             <TextField
               required
               id="name"
+              disabled={loading}
               label="Nome"
               placeholder="Ex: Mateus José"
               value={fullname}
@@ -108,6 +109,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             />
             <InputMask
               mask="999.999.999-99"
+              disabled={loading}
               value={cpf}
               onChange={e => setCpf(e.target.value)}
               onBlur={verifyCpf}
@@ -117,6 +119,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               {() => (
                 <TextField
                   required
+                  disabled={loading}
                   id="cpf"
                   label="CPF"
                   error={touched && (cpfCheck || cpf === '')}
@@ -125,6 +128,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             </InputMask>
             <InputMask
               mask="(99) 99999-9999"
+              disabled={loading}
               value={phone}
               onChange={e => setPhone(e.target.value)}
               onBlur={verifyPhone}
@@ -134,6 +138,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               {() => (
                 <TextField
                   required
+                  disabled={loading}
                   id="phone"
                   label="Telefone"
                   value={phone}
@@ -146,6 +151,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
           <div className='inputs'>
             <TextField
               required
+              disabled={loading}
               id="outlined-required"
               label="Email"
               type="email"
@@ -159,6 +165,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             />
             <InputMask
               mask="99999-999"
+              disabled={loading}
               value={cep}
               onChange={e => setCep(e.target.value)}
               onBlur={handleCepBlur}
@@ -167,6 +174,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               {() => (
                 <TextField
                   required
+                  disabled={loading}
                   id="outlined-required"
                   label="CEP"
                   placeholder="Ex: 11111-000"
@@ -179,6 +187,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               <InputLabel id="state">Estado</InputLabel>
               <Select
                 labelId="uf"
+                disabled={loading}
                 id="uf"
                 label="Estado"
                 value={uf}
@@ -203,6 +212,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
           <div className='inputs'>
             <TextField
               required
+              disabled={loading}
               id="city"
               label="Cidade"
               value={city}
@@ -215,7 +225,8 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             />
             <TextField
               required
-              id="outlined-required"
+              disabled={loading}
+              id="neigh"
               label="Bairro"
               value={neighborhood}
               placeholder="Ex: Centro"
@@ -228,7 +239,8 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             />
             <TextField
               required
-              id="outlined-required"
+              disabled={loading}
+              id="street"
               label="Rua"
               value={street}
               placeholder="Ex: 15 de Novembro"
@@ -257,6 +269,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
             />
             <TextField
               id="complement"
+              disabled={loading}
               label="Complemento"
               placeholder="Ex: Casa 20"
               value={complement}

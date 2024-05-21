@@ -5,7 +5,7 @@ import { TextField, Switch, FormGroup, FormControlLabel, Button, FormControl, Fo
 import Textarea from '@mui/joy/Textarea';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
-import Routing from "./Routing";
+import Routing from '../components/Routing.js';
 import CircularProgress from "@mui/material/CircularProgress";
 import VerifyTouch from "./VerifyTouch";
 
@@ -107,7 +107,7 @@ function PacoteEnvio() {
         <div className='App'>
             <div className="formsTop">
                 <form id="pathForm" className='paths'>
-                    <Button onClick={goToOrigem}>Origem</Button>
+                    <Button color="secondary" onClick={goToOrigem}>Origem</Button>
                     <p>{data.sender.fullname} - {data.sender.cpf}</p>
                     <p>{data.sender.address.cep}</p>
                     <p>{data.sender.address.street} - {data.sender.address.neighborhood}</p>
@@ -115,7 +115,7 @@ function PacoteEnvio() {
                     <p>{data.sender.address.city}-{data.sender.address.uf}</p>
                 </form>
                 <form id="pathForm" className='paths'>
-                    <Button onClick={handleDestClick}>Destino</Button>
+                    <Button color="secondary" onClick={handleDestClick}>Destino</Button>
                     <p>{data.receiver.fullname} - {data.receiver.cpf}</p>
                     <p>{data.receiver.address.cep}</p>
                     <p>{data.receiver.address.street} - {data.receiver.address.neighborhood}</p>
@@ -130,6 +130,7 @@ function PacoteEnvio() {
                     <div className='packageField'>
                         <TextField
                             required
+                            disabled={loading}
                             id="peso"
                             label="Peso (g)"
                             type='number'
@@ -147,6 +148,7 @@ function PacoteEnvio() {
                         <TextField
                             required
                             id="altura"
+                            disabled={loading}
                             label="Altura (cm)"
                             type='number'
                             placeholder="Altura em cm"
@@ -163,6 +165,7 @@ function PacoteEnvio() {
                         <TextField
                             required
                             id="largura"
+                            disabled={loading}
                             label="Largura (cm)"
                             type='number'
                             placeholder="Largura em cm"
@@ -180,6 +183,7 @@ function PacoteEnvio() {
                             required
                             id="comp"
                             label="Comprimento (cm)"
+                            disabled={loading}
                             type='number'
                             placeholder="Comprimento em cm"
                             value={length}
@@ -229,6 +233,7 @@ function PacoteEnvio() {
                     <div className='packageField'>
                         <TextField
                             required
+                            disabled={loading}
                             id="comp"
                             label="Valor da mercadoria"
                             type='number'
@@ -245,6 +250,7 @@ function PacoteEnvio() {
                         />
                         <TextField
                             required
+                            disabled={loading}
                             id="comp"
                             label="Quantidade de itens"
                             type='number'
