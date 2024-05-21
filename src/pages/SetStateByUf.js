@@ -1,12 +1,9 @@
-export default function setStateByUf(uf, state){
-    if(uf === 'SP'){
-      state = 'São Paulo';
-    }else if(uf === 'MG'){
-        state = 'Minas Gerais'
-      }else if(uf === 'RJ'){
-        state = 'Rio de Janeiro'
-      }else{
-        state = 'Outro';
-      }
-      return state;
-    }
+const stateByUfMap = {
+  SP: 'São Paulo',
+  MG: 'Minas Gerais',
+  RJ: 'Rio de Janeiro',
+};
+
+export default function setStateByUf(uf) {
+  return stateByUfMap[uf] || 'Outro';
+}
