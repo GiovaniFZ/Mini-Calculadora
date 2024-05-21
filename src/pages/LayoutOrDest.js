@@ -196,7 +196,7 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
                 onBlur={verifyState}
                 sx={{ backgroundColor: 'white' }}
                 style={{ width: 210 }}
-                error={touched && state === ''}
+                error={touched && stateCheck}
               >
                 <MenuItem value="SP">SP</MenuItem>
                 <MenuItem value="MG">MG</MenuItem>
@@ -255,6 +255,9 @@ function LayoutOrDest(path, role, handleClick, fullname, setName, cpf, setCpf, p
               error={touched && number === ''}
               onBlur={markTouched}
               onFocus={markUntouched}
+              InputProps={{
+                inputProps: { min: 1 }
+              }}
               helperText={touched && number === '' ? 'Número é obrigatório!' : ''}
             />
             <TextField
